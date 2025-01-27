@@ -25,7 +25,7 @@ const ViewEmployees = () => {
     // Fetch employees data
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/users/employees');
+        const response = await axios.get('https://freshire-backend.onrender.com/api/users/employees');
         if (response.status === 200) {
           setEmployees(response.data);
         }
@@ -54,7 +54,7 @@ const ViewEmployees = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await axios.put(`http://localhost:3000/api/users/employees/${employeeId}`, {
+          const response = await axios.put(`https://freshire-backend.onrender.com/api/users/employees/${employeeId}`, {
             status: newStatus
           });
           if (response.status === 200) {
