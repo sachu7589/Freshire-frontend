@@ -38,7 +38,7 @@ const AddUserForm = () => {
 
     try {
         console.log(formData);
-      const response = await axios.post('http://localhost:3000/api/users/register', formData);
+      const response = await axios.post('https://freshire-backend.onrender.com/api/users/register', formData);
       
       if (response.status === 201) {
         Swal.fire({
