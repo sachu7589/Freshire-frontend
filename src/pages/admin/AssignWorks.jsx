@@ -22,7 +22,7 @@ export default function AssignWorks() {
 
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/users/employees');
+        const response = await axios.get('https://freshire-backend.onrender.com/api/users/employees');
         if (response.status === 200) {
           // Filter only active employees
           const activeEmployees = response.data.filter(emp => emp.status === 'active');
