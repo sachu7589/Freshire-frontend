@@ -15,7 +15,7 @@ function Login() {
     setError(null)
 
     try {
-      const response = await axios.post('http://localhost:3000/api/users/login', {
+      const response = await axios.post('https://freshire-backend.onrender.com:3000/api/users/login', {
         email: username, // Using email as username
         password
       }, {
