@@ -1,0 +1,86 @@
+.login-container {
+  max-width: 400px;
+  margin: 4rem auto;
+  padding: 2.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+.brand-heading {
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #4f46e5;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+.login-container h2 {
+  text-align: center;
+  color: #1a1a1a;
+  margin-bottom: 2rem;
+  font-weight: 600;
+  font-size: 1.75rem;
+}
+
+.login-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.login-container form div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.login-container label {
+  font-weight: 500;
+  color: #4a4a4a;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+}
+
+.login-container input {
+  padding: 1rem;
+  border: 2px solid #eaeaea;
+  border-radius: 12px;
+  font-size: 1rem;
+  background: #f8f8f8;
+  transition: all 0.2s ease;
+}
+
+.login-container input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+  background: white;
+}
+
+.login-container button {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.02em;
+}
+
+.login-container button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+}
+
+.login-container button:active {
+  transform: translateY(0);
+  background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+}
