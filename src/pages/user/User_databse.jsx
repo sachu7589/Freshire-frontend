@@ -27,7 +27,7 @@ function User_databse() {
       setLoading(true);
       try {
         // Only fetch contacts where view=0
-        const response = await fetch(`http://localhost:3000/api/contacts/employee/${userId}`);
+        const response = await fetch(`https://freshire-backend.onrender.com/api/contacts/employee/${userId}`);
         const result = await response.json();
 
         if (!response.ok) {
@@ -88,7 +88,7 @@ function User_databse() {
 
     try {
       // First create contact update
-      const updateResponse = await fetch('http://localhost:3000/api/contact-updates', {
+      const updateResponse = await fetch('https://freshire-backend.onrender.com/api/contact-updates', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -108,7 +108,7 @@ function User_databse() {
       }
 
       // Then update contact view status
-      const viewResponse = await fetch(`http://localhost:3000/api/contacts/${contactId}/view`, {
+      const viewResponse = await fetch(`https://freshire-backend.onrender.com/api/contacts/${contactId}/view`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
