@@ -78,7 +78,7 @@ export default function AssignWorks() {
       });
   
       const response = await axios.post(
-        `http://localhost:3000/api/contacts/upload/${employeeId}`,
+        `https://freshire-backend.onrender.com/api/contacts/upload/${employeeId}`,
         formData,
         {
           headers: {
