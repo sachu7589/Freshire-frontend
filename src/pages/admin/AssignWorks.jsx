@@ -11,6 +11,8 @@ export default function AssignWorks() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState({});
+  const [uploadingEmployeeId, setUploadingEmployeeId] = useState(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
     const userId = sessionStorage.getItem("userId");
@@ -71,6 +73,9 @@ export default function AssignWorks() {
     formData.append('file', file);  // Make sure this matches the multer field name
   
     try {
+      setUploadingEmployeeId(employeeId);
+      setUploadProgress(0);
+      
       console.log('Uploading file:', {
         employeeId,
         fileName: file.name,
@@ -84,10 +89,9 @@ export default function AssignWorks() {
           headers: {
             'Content-Type': 'multipart/form-data'
           },
-          // Add this to see upload progress (optional)
           onUploadProgress: (progressEvent) => {
             const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-            console.log('Upload progress:', percentCompleted);
+            setUploadProgress(percentCompleted);
           }
         }
       );
@@ -111,6 +115,9 @@ export default function AssignWorks() {
         title: 'Upload Failed',
         text: err.response?.data?.message || err.message
       });
+    } finally {
+      setUploadingEmployeeId(null);
+      setUploadProgress(0);
     }
   };
 
@@ -186,6 +193,23 @@ export default function AssignWorks() {
                           backgroundColor: '#f9fafb'
                         }}
                       />
+                      {uploadingEmployeeId === employee._id && (
+                        <div style={{ 
+                          width: '100%', 
+                          height: '4px', 
+                          backgroundColor: '#e5e7eb',
+                          borderRadius: '2px',
+                          marginTop: '8px'
+                        }}>
+                          <div style={{
+                            width: `${uploadProgress}%`,
+                            height: '100%',
+                            backgroundColor: '#4f46e5',
+                            borderRadius: '2px',
+                            transition: 'width 0.3s ease'
+                          }} />
+                        </div>
+                      )}
                       <button
                         onClick={() => handleFileUpload(employee._id)}
                         style={{
@@ -207,9 +231,13 @@ export default function AssignWorks() {
                             cursor: 'not-allowed'
                           }
                         }}
-                        disabled={!selectedFiles[employee._id]}
+                        disabled={!selectedFiles[employee._id] || uploadingEmployeeId === employee._id}
                       >
-                        Upload File
+                        {uploadingEmployeeId === employee._id ? (
+                          <span>Uploading... {uploadProgress}%</span>
+                        ) : (
+                          'Upload File'
+                        )}
                       </button>
                     </div>
                   </div>
