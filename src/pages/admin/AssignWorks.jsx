@@ -22,7 +22,7 @@ export default function AssignWorks() {
 
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/users/employees');
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/users/employees`);
         if (response.status === 200) {
           // Filter only active employees
           const activeEmployees = response.data.filter(emp => emp.status === 'active');
@@ -78,7 +78,7 @@ export default function AssignWorks() {
       });
   
       const response = await axios.post(
-        `http://localhost:3000/api/contacts/upload/${employeeId}`,
+        `${import.meta.env.VITE_API_URL}/contacts/upload/${employeeId}`,
         formData,
         {
           headers: {

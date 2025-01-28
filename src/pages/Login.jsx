@@ -8,14 +8,16 @@ function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError(null)
+    setIsLoading(true)
 
     try {
-      const response = await axios.post('http://localhost:3000/api/users/login', {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/users/login`, {
         email: username, // Using email as username
         password
       }, {
@@ -34,6 +36,7 @@ function Login() {
           confirmButtonColor: '#4f46e5'
         });
         setPassword(''); // Clear password field
+        setIsLoading(false);
         return; // Exit early before setting session storage or redirecting
       }
       if (response.data.user) {
@@ -63,6 +66,8 @@ function Login() {
         text: error.response?.data?.message || 'The email or password you entered is incorrect',
         confirmButtonColor: '#4f46e5'
       });
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -93,7 +98,17 @@ function Login() {
               required
             />
           </div>
-          <button type="submit">Login</button>
+          <button className={isLoading ? 'loading' : ''} type="submit" disabled={isLoading}>
+            {isLoading ? (
+              <div className="loading-spinner">
+                <div className="spinner-circle"></div>
+                <div className="spinner-circle"></div>
+                <div className="spinner-circle"></div>
+              </div>
+            ) : (
+              <span>Login</span>
+            )}
+          </button>
         </form>
       </div>
     </>

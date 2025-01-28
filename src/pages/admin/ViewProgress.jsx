@@ -20,7 +20,7 @@ const ViewProgress = () => {
   useEffect(() => {
     const fetchProgressData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/contact-updates');
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/contact-updates`);
         const result = await response.json();
         
         if (result.success) {
@@ -62,7 +62,7 @@ const ViewProgress = () => {
         confirmButtonText: 'Yes, remove it!'
       }).then(async (result) => {
         if (result.isConfirmed) {
-          const response = await fetch(`http://localhost:3000/api/contact-updates/${id}/view`, {
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/contact-updates/${id}/view`, {
             method: 'PATCH'
           });
           const data = await response.json();
