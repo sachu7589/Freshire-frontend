@@ -200,14 +200,6 @@ function User_databse() {
               <h2 className="contacts-table-title">
                 <i className="fas fa-address-book"></i> Contact Database
               </h2>
-              <div className="contacts-actions">
-                <button className="action-button">
-                  <i className="fas fa-filter"></i> Filter
-                </button>
-                <button className="action-button">
-                  <i className="fas fa-sort"></i> Sort
-                </button>
-              </div>
             </div>
             
             <div className="contacts-table-responsive">
@@ -215,8 +207,7 @@ function User_databse() {
                 <thead>
                   <tr>
                     <th>Company</th>
-                    <th>Contact Info</th>
-                    <th>Social Media</th>
+                    <th>Contact Information</th>
                     <th>Status</th>
                     <th>Notes</th>
                     <th>Action</th>
@@ -225,7 +216,7 @@ function User_databse() {
                 <tbody>
                   {contacts.length === 0 ? (
                     <tr>
-                      <td colSpan="6" className="no-data-cell">
+                      <td colSpan="5" className="no-data-cell">
                         <div className="no-data-message">
                           <i className="fas fa-inbox empty-icon"></i>
                           <p>No contacts available for processing</p>
@@ -235,40 +226,91 @@ function User_databse() {
                     </tr>
                   ) : (
                     contacts.map((contact, index) => (
-                      <tr key={contact._id || index} className="contact-row">
+                      <tr 
+                        key={contact._id || index} 
+                        className="contact-row"
+                        style={{ 
+                          backgroundColor: index % 2 === 0 ? '#f8f9fa' : '#ffffff',
+                          borderLeft: '3px solid #233ce6',
+                          boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+                          marginBottom: '8px',
+                          transition: 'all 0.2s ease'
+                        }}
+                      >
                         <td data-label="Company">
                           <div className="company-cell">
-                            <div className="company-avatar">
+                            <div className="company-avatar" style={{ 
+                              backgroundColor: '#233ce6', 
+                              color: 'white',
+                              fontWeight: 'bold',
+                              width: '40px',
+                              height: '40px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              borderRadius: '50%',
+                              fontSize: '16px'
+                            }}>
                               {contact.companyName.charAt(0)}
                             </div>
-                            <span>{contact.companyName}</span>
+                            <span style={{ fontWeight: '500' }}>{contact.companyName}</span>
                           </div>
                         </td>
-                        <td data-label="Contact Info">
-                          <div className="contact-details">
-                            <div className="contact-email">
-                              <i className="fas fa-envelope"></i>
-                              {contact.email}
-                            </div>
-                            <div className="contact-phone">
-                              <i className="fas fa-phone"></i>
-                              {contact.phone}
-                            </div>
-                          </div>
-                        </td>
-                        <td data-label="Social Media">
-                          <div className="social-links">
-                            {contact.socialMedia && (
-                              <a href={contact.socialMedia} target="_blank" rel="noopener noreferrer" className="social-link" title="Visit website">
-                                <i className="fas fa-globe"></i>
+                        <td data-label="Contact Information">
+                          <div className="contact-details" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            <div className="contact-email" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              <i className="fas fa-envelope" style={{ color: '#6c757d' }}></i>
+                              <span>{contact.email}</span>
+                              <a href={`mailto:${contact.email}`} className="social-link" title="Send email" style={{ 
+                                backgroundColor: '#e9ecef', 
+                                color: '#495057',
+                                width: '28px',
+                                height: '28px',
+                                borderRadius: '50%',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginLeft: '4px'
+                              }}>
+                                <i className="fas fa-paper-plane" style={{ fontSize: '12px' }}></i>
                               </a>
+                            </div>
+                            <div className="contact-phone" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              <i className="fas fa-phone" style={{ color: '#6c757d' }}></i>
+                              <span>{contact.phone}</span>
+                              <a href={`tel:${contact.phone}`} className="social-link" title="Call" style={{ 
+                                backgroundColor: '#e9ecef', 
+                                color: '#495057',
+                                width: '28px',
+                                height: '28px',
+                                borderRadius: '50%',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginLeft: '4px'
+                              }}>
+                                <i className="fas fa-phone-alt" style={{ fontSize: '12px' }}></i>
+                              </a>
+                            </div>
+                            {contact.socialMedia && (
+                              <div className="contact-website" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <i className="fas fa-globe" style={{ color: '#6c757d' }}></i>
+                                <span>Website</span>
+                                <a href={contact.socialMedia} target="_blank" rel="noopener noreferrer" className="social-link" title="Visit website" style={{ 
+                                  backgroundColor: '#e9ecef', 
+                                  color: '#495057',
+                                  width: '28px',
+                                  height: '28px',
+                                  borderRadius: '50%',
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  marginLeft: '4px'
+                                }}>
+                                  <i className="fas fa-external-link-alt" style={{ fontSize: '12px' }}></i>
+                                </a>
+                              </div>
                             )}
-                            <a href={`mailto:${contact.email}`} className="social-link" title="Send email">
-                              <i className="fas fa-envelope"></i>
-                            </a>
-                            <a href={`tel:${contact.phone}`} className="social-link" title="Call">
-                              <i className="fas fa-phone"></i>
-                            </a>
                           </div>
                         </td>
                         <td data-label="Status">
@@ -279,10 +321,21 @@ function User_databse() {
                               ...contactStatuses,
                               [contact._id]: e.target.value
                             })}
+                            style={{
+                              border: '1px solid #ced4da',
+                              borderRadius: '4px',
+                              padding: '8px 12px',
+                              width: '100%'
+                            }}
                           >
                             <option value="">Select Status</option>
                             <option value="called">Called</option>
                             <option value="not_responding">Not Responding</option>
+                            <option value="interested">Interested</option>
+                            <option value="follow_up">Follow Up</option>
+                            <option value="meeting_scheduled">Meeting Scheduled</option>
+                            <option value="converted">Converted</option>
+                            <option value="not_interested">Not Interested</option>
                           </select>
                         </td>
                         <td data-label="Notes">
@@ -294,6 +347,14 @@ function User_databse() {
                               [contact._id]: e.target.value
                             })}
                             placeholder="Add your contact notes here..."
+                            style={{
+                              border: '1px solid #ced4da',
+                              borderRadius: '4px',
+                              padding: '8px 12px',
+                              resize: 'vertical',
+                              width: '100%',
+                              minHeight: '80px'
+                            }}
                           />
                         </td>
                         <td data-label="Action">
@@ -301,6 +362,21 @@ function User_databse() {
                             className="submit-button"
                             onClick={() => handleSubmit(contact._id)}
                             disabled={!contactStatuses[contact._id] || !contactNotes[contact._id]}
+                            style={{
+                              backgroundColor: '#233ce6',
+                              color: '#ffffff',
+                              padding: '8px 16px',
+                              borderRadius: '4px',
+                              border: 'none',
+                              cursor: (!contactStatuses[contact._id] || !contactNotes[contact._id]) ? 'not-allowed' : 'pointer',
+                              opacity: (!contactStatuses[contact._id] || !contactNotes[contact._id]) ? '0.6' : '1',
+                              transition: 'all 0.3s ease',
+                              width: '100%',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '8px'
+                            }}
                           >
                             <i className="fas fa-check-circle"></i> Submit
                           </button>
