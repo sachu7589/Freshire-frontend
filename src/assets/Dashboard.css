@@ -1,0 +1,377 @@
+/* Base Layout */
+.app {
+  display: flex;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 250px;
+  padding: 20px 30px;
+  perspective: 1000px; /* 3D effect for child elements */
+}
+
+/* Dashboard Header Styles */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+.dashboard-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #233ce6 0%, #4a5feb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-subtitle {
+  font-size: 0.95rem;
+  color: #6c757d;
+}
+
+/* Enhanced Card Styles with 3D Effects */
+.dashboard-card {
+  border: none;
+  border-radius: 15px;
+  background: #ffffff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px) rotateX(2deg);
+  box-shadow: 0 8px 25px rgba(35, 60, 230, 0.1);
+}
+
+/* Note Taking Component */
+.notes-section {
+  margin-top: 2rem;
+}
+
+.note-card {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid #233ce6;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.note-card:hover {
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 6px 20px rgba(35, 60, 230, 0.1);
+}
+
+.note-input {
+  width: 100%;
+  border: 1px solid #e9ecef;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  resize: none;
+  transition: all 0.3s ease;
+}
+
+.note-input:focus {
+  border-color: #233ce6;
+  box-shadow: 0 0 0 3px rgba(35, 60, 230, 0.1);
+  outline: none;
+}
+
+/* Stats Card Modern Style */
+.stat-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.stat-icon-container {
+  padding: 1rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(35, 60, 230, 0.1) 0%, rgba(35, 60, 230, 0.05) 100%);
+}
+
+/* Table Modern Style */
+.table {
+  margin: 0;
+  border-spacing: 0 0.5rem;
+  border-collapse: separate;
+}
+
+.table thead th {
+  border: none;
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.875rem;
+  padding: 1rem;
+  background: rgba(35, 60, 230, 0.02);
+}
+
+.table tbody td {
+  padding: 1.25rem 1rem;
+  vertical-align: middle;
+  border: none;
+  background: #ffffff;
+  transition: transform 0.2s ease;
+}
+
+.table tbody tr {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: all 0.3s ease;
+}
+
+.table tbody tr:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(35, 60, 230, 0.1);
+}
+
+/* Modern Button Styles */
+.btn-link {
+  color: #233ce6;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-link:hover {
+  color: #1a2db3;
+  background: rgba(35, 60, 230, 0.05);
+}
+
+/* Modern Badge Style */
+.badge {
+  padding: 0.5em 1em;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  border-radius: 8px;
+}
+
+/* Progress Bars */
+.progress {
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(35, 60, 230, 0.1);
+  overflow: hidden;
+}
+
+.progress-bar {
+  background: linear-gradient(135deg, #233ce6 0%, #4a5feb 100%);
+  transition: width 0.6s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 991.98px) {
+  .main-content {
+    margin-left: 0;
+    padding: 15px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dashboard-actions {
+    margin-top: 1rem;
+    width: 100%;
+    display: flex;
+    gap: 10px;
+  }
+
+  .dashboard-actions button {
+    flex: 1;
+  }
+
+  .note-card {
+    margin: 1rem 0;
+  }
+}
+
+/* Animation Effects */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+.hover-lift {
+  transition: all 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 8px 25px rgba(35, 60, 230, 0.1);
+}
+
+/* Card Headers with Gradient */
+.card-header {
+  background: linear-gradient(135deg, rgba(35, 60, 230, 0.05) 0%, rgba(74, 95, 235, 0.05) 100%);
+  border-bottom: none;
+  padding: 1.5rem;
+}
+
+.card-header h5 {
+  font-weight: 700;
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.activity-timeline {
+  padding: 0 1rem;
+}
+
+.activity-item {
+  position: relative;
+}
+
+.activity-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 1.15rem;
+  top: 2.5rem;
+  bottom: -1rem;
+  width: 2px;
+  background-color: #e9ecef;
+}
+
+.icon-circle {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.activity-content {
+  padding-left: 0.5rem;
+}
+
+/* Mobile Responsive Updates */
+.main-content.mobile {
+  margin-left: 0;
+  padding: 15px;
+}
+
+@media (max-width: 767px) {
+  .app {
+    flex-direction: column;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 10px;
+  }
+
+  .dashboard-header {
+    padding: 15px 0;
+  }
+
+  .dashboard-title {
+    font-size: 1.5rem;
+  }
+
+  .dashboard-subtitle {
+    font-size: 0.875rem;
+  }
+
+  .dashboard-card {
+    margin-bottom: 15px;
+  }
+
+  /* Adjust stat cards for mobile */
+  .stat-number {
+    font-size: 1.5rem;
+  }
+
+  .stat-icon-container {
+    padding: 0.75rem;
+  }
+
+  /* Table adjustments for mobile */
+  .table-responsive {
+    margin: 0 -15px;
+    padding: 0 15px;
+    width: calc(100% + 30px);
+  }
+
+  .table thead th {
+    padding: 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .table tbody td {
+    padding: 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  /* Card header adjustments */
+  .card-header {
+    padding: 1rem;
+  }
+
+  .card-header h5 {
+    font-size: 1.1rem;
+  }
+
+  /* Activity timeline adjustments */
+  .activity-timeline {
+    padding: 0 0.5rem;
+  }
+
+  .activity-item {
+    margin-bottom: 1rem;
+  }
+
+  .icon-circle {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+/* Add smooth transitions for responsive changes */
+.main-content {
+  transition: margin-left 0.3s ease, padding 0.3s ease;
+}
+
+.dashboard-card {
+  transition: margin-bottom 0.3s ease;
+}
+
+/* Optimize table scrolling on mobile */
+.table-responsive {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+/* Improve touch targets on mobile */
+.btn-link, 
+.badge {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
