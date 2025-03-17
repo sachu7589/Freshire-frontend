@@ -7,7 +7,10 @@ import {
   ClipboardList, 
   LineChart, 
   Menu, 
-  User 
+  User,
+  BarChart,
+  CheckCircle,
+  XCircle
 } from "lucide-react";
 import { useState, useEffect } from 'react';
 import Swal from "sweetalert2";
@@ -106,13 +109,13 @@ const Sidebar = () => {
                   switch (userName) {
                     case 'Aswin Chacko':
                       return 'Chief Marketing Officer';
-                    case 'Sachu Saji':
+                    case 'Sachu saji':
                       return 'Chief Technology Officer';
-                    case 'Aswin Kumar P.S':
+                    case 'Aswin Kumar Ps':
                       return 'Chief Sales Officer';
                     case 'Eapen Thomas':
                       return 'Chief Financial Officer';
-                    case 'Aromal P Girish':
+                    case 'Aromal p Girish':
                       return 'Chief Outreach Officer';
                     case 'Chris Benny':
                       return 'Chief Operation Officer';
@@ -213,6 +216,57 @@ const Sidebar = () => {
             >
               <LineChart size={18} className="me-3" />
               <span className="fw-medium">View Progress</span>
+            </NavLink>
+          </li>
+
+          <li className="nav-item mb-2">
+            <NavLink
+              to="/admin/employee-progress"
+              className={({ isActive }) =>
+                `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
+              }
+              style={{ 
+                padding: '10px 15px', 
+                background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
+                transition: 'all 0.3s ease'
+              }}
+            >
+              <BarChart size={18} className="me-3" />
+              <span className="fw-medium">Employee Progress</span>
+            </NavLink>
+          </li>
+
+          <li className="nav-item mb-2">
+            <NavLink
+              to="/admin/accept-response"
+              className={({ isActive }) =>
+                `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
+              }
+              style={{ 
+                padding: '10px 15px', 
+                background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
+                transition: 'all 0.3s ease'
+              }}
+            >
+              <CheckCircle size={18} className="me-3" />
+              <span className="fw-medium">Accepted Data</span>
+            </NavLink>
+          </li>
+
+          <li className="nav-item mb-2">
+            <NavLink
+              to="/admin/rejected-response"
+              className={({ isActive }) =>
+                `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
+              }
+              style={{ 
+                padding: '10px 15px', 
+                background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
+                transition: 'all 0.3s ease'
+              }}
+            >
+              <XCircle size={18} className="me-3" />
+              <span className="fw-medium">Rejected Data</span>
             </NavLink>
           </li>
         </ul>

@@ -157,7 +157,7 @@ const Sidebar = () => {
             </NavLink>
           </li>
           
-          <li className="nav-item mb-2">
+          {/* <li className="nav-item mb-2">
             <NavLink
               to="/user/notconnected"
               className={({ isActive }) =>
@@ -172,7 +172,7 @@ const Sidebar = () => {
               <Bell size={18} className="me-3" />
               <span className="fw-medium">Notifications</span>
             </NavLink>
-          </li>
+          </li> */}
         </ul>
         
         <div className="p-3 mt-5" 
