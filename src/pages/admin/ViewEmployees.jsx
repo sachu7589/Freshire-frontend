@@ -85,7 +85,6 @@ const ViewEmployees = () => {
       <Sidebar />
       <div className="main-content">
         <div style={{ position: 'sticky', top: 0, zIndex: 100, backgroundColor: 'white' }}>
-          <TopNav />
         </div>
         <div className="content" style={{ height: 'calc(100vh - 60px)', display: 'flex', flexDirection: 'column' }}>
           <div style={{ position: 'sticky', top: 0, backgroundColor: 'white', padding: '20px 24px 0', zIndex: 99 }}>

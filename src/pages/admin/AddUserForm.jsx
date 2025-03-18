@@ -64,7 +64,6 @@ const AddUserForm = () => {
     <div className="app">
       <Sidebar />
       <div className="main-content">
-        <TopNav />
         <div className="content">
           <form className="add-user-form" onSubmit={handleSubmit}>
             <h2>Add New User</h2>

@@ -126,7 +126,6 @@ export default function AssignWorks() {
       <Sidebar />
       <div className="main-content">
         <div style={{ position: 'sticky', top: 0, zIndex: 100, backgroundColor: 'white' }}>
-          <TopNav />
         </div>
         <div className="content" style={{ padding: '20px', backgroundColor: '#f5f5f5' }}>
           {loading ? (
