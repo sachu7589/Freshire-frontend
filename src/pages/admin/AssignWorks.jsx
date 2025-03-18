@@ -167,9 +167,14 @@ export default function AssignWorks() {
           </div>
 
           {loading ? (
-            <div className="loading-spinner">
-              <div className="spinner"></div>
-              <p>Loading employees...</p>
+            <div className="loading-container">
+              <div className="loading-animation">
+                <div className="dot"></div>
+                <div className="dot"></div>
+                <div className="dot"></div>
+              </div>
+              <h2 className="loading-text">Loading Employees</h2>
+              <p className="loading-subtext">Please wait while we fetch the data</p>
             </div>
           ) : error ? (
             <div className="error-container">
