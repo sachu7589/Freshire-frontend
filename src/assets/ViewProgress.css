@@ -304,7 +304,7 @@
 
 .item-footer {
   padding: 16px 20px;
-  border-top: 1px solid #e8eaf6;
+  border-top: 1px solid var(--neutral-100);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -439,10 +439,11 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: #f8f9fc;
+  background: var(--neutral-50);
   padding: 8px 16px;
   border-radius: 8px;
-  border: 1px solid #e8eaf6;
+  border: 1px solid var(--neutral-200);
+  position: relative;
 }
 
 .search-box input {
@@ -450,12 +451,31 @@
   border: none;
   background: none;
   font-size: 14px;
-  color: #1a237e;
+  color: var(--neutral-900);
   outline: none;
 }
 
 .search-box input::placeholder {
-  color: #64748b;
+  color: var(--neutral-500);
+}
+
+.clear-search {
+  background: none;
+  border: none;
+  color: var(--neutral-500);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.clear-search:hover {
+  background: var(--neutral-100);
+  color: var(--danger-500);
 }
 
 .filter-sort-group {
@@ -468,10 +488,10 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #f8f9fc;
+  background: var(--neutral-50);
   padding: 8px 16px;
   border-radius: 8px;
-  border: 1px solid #e8eaf6;
+  border: 1px solid var(--neutral-200);
 }
 
 .filter-dropdown select,
@@ -479,7 +499,7 @@
   border: none;
   background: none;
   font-size: 14px;
-  color: #1a237e;
+  color: var(--neutral-900);
   cursor: pointer;
   outline: none;
   padding-right: 24px;
@@ -487,26 +507,9 @@
   appearance: none;
 }
 
-.filter-dropdown,
-.sort-dropdown {
-  position: relative;
-}
-
-.filter-dropdown::after,
-.sort-dropdown::after {
-  content: '';
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 4px solid #64748b;
-}
-
 .results-summary {
   font-size: 14px;
-  color: #64748b;
+  color: var(--neutral-500);
   margin-bottom: 16px;
 }
 
@@ -747,5 +750,242 @@
 
   .details-section h3 {
     font-size: 16px;
+  }
+}
+
+.progress-bar {
+  height: 8px;
+  background: #f1f5f9;
+  border-radius: 4px;
+  margin-top: 16px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(135deg, #3949ab, #1a237e);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.completion-rate {
+  font-weight: 500;
+  color: #1a237e;
+}
+
+.remaining-calls {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.header-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  width: 100%;
+  margin-top: 24px;
+}
+
+@media (max-width: 768px) {
+  .header-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .header-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Color Variables */
+:root {
+  /* Primary Colors */
+  --primary-50: #e8eaf6;
+  --primary-100: #c5cae9;
+  --primary-500: #3f51b5;
+  --primary-600: #3949ab;
+  --primary-700: #303f9f;
+  --primary-800: #283593;
+  --primary-900: #1a237e;
+
+  /* Status Colors */
+  --success-50: #e8f5e9;
+  --success-500: #4caf50;
+  --success-700: #388e3c;
+  
+  --warning-50: #fff3e0;
+  --warning-500: #ff9800;
+  --warning-700: #f57c00;
+  
+  --danger-50: #ffebee;
+  --danger-500: #f44336;
+  --danger-700: #d32f2f;
+  
+  --info-50: #e3f2fd;
+  --info-500: #2196f3;
+  --info-700: #1976d2;
+  
+  --neutral-50: #f8fafc;
+  --neutral-100: #f1f5f9;
+  --neutral-200: #e2e8f0;
+  --neutral-500: #64748b;
+  --neutral-700: #334155;
+  --neutral-900: #0f172a;
+}
+
+/* Status Colors for Cards */
+.progress-item.top-performer {
+  border-left: 4px solid var(--success-500);
+}
+
+.progress-item.needs-improvement {
+  border-left: 4px solid var(--danger-500);
+}
+
+.progress-item.most-efficient {
+  border-left: 4px solid var(--info-500);
+}
+
+/* Status Badge Colors */
+.status.status-called {
+  background-color: var(--success-50);
+  color: var(--success-700);
+}
+
+.status.status-not-responding {
+  background-color: var(--danger-50);
+  color: var(--danger-700);
+}
+
+.status.status-interested {
+  background-color: var(--info-50);
+  color: var(--info-700);
+}
+
+.status.status-not-interested {
+  background-color: var(--neutral-100);
+  color: var(--neutral-700);
+}
+
+.status.status-callback {
+  background-color: var(--warning-50);
+  color: var(--warning-700);
+}
+
+/* Progress Bar Colors */
+.progress-bar {
+  background-color: var(--neutral-100);
+}
+
+.progress-fill {
+  background: linear-gradient(135deg, var(--primary-500), var(--primary-700));
+}
+
+.progress-fill.high {
+  background: linear-gradient(135deg, var(--success-500), var(--success-700));
+}
+
+.progress-fill.medium {
+  background: linear-gradient(135deg, var(--warning-500), var(--warning-700));
+}
+
+.progress-fill.low {
+  background: linear-gradient(135deg, var(--danger-500), var(--danger-700));
+}
+
+/* Stat Box Colors */
+.stat-box:nth-child(1) .stat-icon {
+  background-color: var(--primary-50);
+  color: var(--primary-700);
+}
+
+.stat-box:nth-child(2) .stat-icon {
+  background-color: var(--info-50);
+  color: var(--info-700);
+}
+
+.stat-box:nth-child(3) .stat-icon {
+  background-color: var(--success-50);
+  color: var(--success-700);
+}
+
+.stat-box:nth-child(4) .stat-icon {
+  background-color: var(--warning-50);
+  color: var(--warning-700);
+}
+
+/* User Avatar Colors */
+.user-avatar {
+  background: linear-gradient(135deg, var(--primary-500), var(--primary-700));
+}
+
+.top-performer .user-avatar {
+  background: linear-gradient(135deg, var(--success-500), var(--success-700));
+}
+
+.needs-improvement .user-avatar {
+  background: linear-gradient(135deg, var(--danger-500), var(--danger-700));
+}
+
+.most-efficient .user-avatar {
+  background: linear-gradient(135deg, var(--info-500), var(--info-700));
+}
+
+/* WhatsApp Button Styles */
+.whatsapp-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #25D366; /* WhatsApp green */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.whatsapp-button:hover {
+  background-color: #128C7E;
+  transform: translateY(-1px);
+}
+
+.whatsapp-button:active {
+  transform: translateY(0);
+}
+
+/* Update item footer styles */
+.item-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--neutral-100);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.completion-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .item-footer {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .whatsapp-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .completion-stats {
+    width: 100%;
+    text-align: center;
   }
 }
