@@ -7,6 +7,24 @@ import Sidebar from "./Sidebar";
 import TopNav from "./TopNav";
 import "../../assets/Dashboard.css";
 import axios from "axios";
+import {
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Legend
+} from "recharts";
+import { Phone, AlertCircle, Check, X, Clock } from 'lucide-react';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -36,6 +54,35 @@ const Dashboard = () => {
 
   const [recentActivities, setRecentActivities] = useState([]);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  // Performance data for the area chart
+  const performanceData = [
+    { name: "Mon", employees: 24, efficiency: 85 },
+    { name: "Tue", employees: 28, efficiency: 90 },
+    { name: "Wed", employees: 26, efficiency: 87 },
+    { name: "Thu", employees: 32, efficiency: 92 },
+    { name: "Fri", employees: 30, efficiency: 88 },
+    { name: "Sat", employees: 25, efficiency: 85 },
+    { name: "Sun", employees: 27, efficiency: 89 }
+  ];
+
+  // Task distribution data for pie chart
+  const taskDistribution = [
+    { name: "Completed", value: 45, color: "#2ecc71" },
+    { name: "In Progress", value: 35, color: "#3498db" },
+    { name: "Pending", value: 20, color: "#f39c12" }
+  ];
+
+  // Recent activities
+  const recentActivitiesData = [
+    { id: 1, action: "New employee joined", name: "John Doe", time: "2 hours ago", icon: <FaUsers className="text-primary" /> },
+    { id: 2, action: "Task completed", name: "Project Alpha", time: "4 hours ago", icon: <FaCalendarCheck className="text-success" /> },
+    { id: 3, action: "New project assigned", name: "Market Research", time: "Yesterday", icon: <FaBriefcase className="text-info" /> },
+    { id: 4, action: "Performance review", name: "Team Meeting", time: "Yesterday", icon: <FaChartLine className="text-warning" /> }
+  ];
+
+  // Add new state for top performers data
+  const [topPerformersData, setTopPerformersData] = useState([]);
 
   useEffect(() => {
     // Check if user is logged in by checking sessionStorage
@@ -89,6 +136,25 @@ const Dashboard = () => {
             }))
         );
 
+        // Fetch employee progress data
+        const progressResponse = await axios.get(`${import.meta.env.VITE_API_URL}/contacts/`);
+        if (progressResponse.data.success && progressResponse.data.viewStatistics) {
+          // Process data for top performers
+          const sortedPerformers = progressResponse.data.viewStatistics
+            .map(stat => ({
+              name: stat.employeeName,
+              total: stat.totalContacts,
+              completed: stat.viewedCount,
+              remaining: stat.notViewedCount
+            }))
+            .sort((a, b) => b.completed - a.completed)
+            .slice(0, 5);
+
+          setTopPerformersData(sortedPerformers);
+
+          // ... existing task distribution calculation ...
+        }
+
       } catch (err) {
         console.error('Error fetching dashboard data:', err);
       }
@@ -96,12 +162,23 @@ const Dashboard = () => {
 
     fetchDashboardData();
 
-    // Add new fetch for recent activities
+    // Update the fetchRecentActivities function
     const fetchRecentActivities = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/activities/recent`);
-        if (response.status === 200) {
-          setRecentActivities(response.data);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/contact-updates`);
+        if (response.data.success) {
+          const recentUpdates = response.data.data
+            .filter(update => update.view === 0)
+            .slice(0, 5)
+            .map(update => ({
+              id: update._id,
+              action: `Updated status to ${update.status}`,
+              name: update.contactid.companyName,
+              time: new Date(update.createdAt).toLocaleString(),
+              icon: getStatusIcon(update.status),
+              status: update.status.toLowerCase().replace(' ', '_')
+            }));
+          setRecentActivities(recentUpdates);
         }
       } catch (error) {
         console.error("Error fetching recent activities:", error);
@@ -130,256 +207,167 @@ const Dashboard = () => {
     return <Badge bg={statusMap[status] || "secondary"}>{status}</Badge>;
   };
 
+  // Add this helper function to get the appropriate icon for each status
+  const getStatusIcon = (status) => {
+    const statusLower = status.toLowerCase();
+    if (statusLower.includes('called')) return <Phone className="text-primary" />;
+    if (statusLower.includes('interested')) return <Check className="text-success" />;
+    if (statusLower.includes('not_interested')) return <X className="text-danger" />;
+    if (statusLower.includes('callback')) return <Clock className="text-warning" />;
+    return <AlertCircle className="text-secondary" />;
+  };
+
   return (
-    <div className="app">
+    <div className="dashboard-container">
       <Sidebar />
-      <div className={`main-content ${isMobile ? 'mobile' : ''}`}>
-        <div className="content">
-          <Container fluid>
-            <Row className="mb-4">
-              <Col>
-                <div className="dashboard-header">
-                  <div>
-                    <h2 className="dashboard-title">Admin Dashboard</h2>
-                    <p className="dashboard-subtitle text-muted">Welcome back! Here's what's happening with your recruitment pipeline today.</p>
-                  </div>
-                  
+      <div className="dashboard-content">
+        <main className="main-content" style={{ paddingTop: "60px" }}>
+          <div className="content-header mb-4">
+            <div className="d-flex justify-content-between align-items-center">
+              <div>
+                <h1 className="page-title fw-bold">
+                  <span className="text-gradient">Admin Dashboard</span>
+                </h1>
+                <p className="text-muted">Welcome to your administrative overview</p>
+              </div>
+              <div className="d-flex align-items-center">
+                <div className="date-badge">
+                  <span className="fw-bold">{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
                 </div>
-              </Col>
-            </Row>
-            
-            <Row className="mb-4 g-3">
-              <Col xs={12} sm={6} md={4} lg={3}>
-                <Card className="dashboard-card shadow-sm">
-                  <Card.Body>
-                    <div className="d-flex justify-content-between align-items-start">
-                      <div>
-                        <p className="stat-title text-muted mb-1">Total Employees</p>
-                        <h3 className="stat-number mb-2">{stats.totalEmployees}</h3>
-                        <div className="stat-change">
-                          <span className="text-muted">Active: {stats.activeEmployees}</span>
-                        </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Stats Cards */}
+          <Row className="g-4 mb-4">
+            {[
+              { title: 'Total Employees', value: stats.totalEmployees, icon: <FaUsers />, color: '#3a7bd5', type: 'total' },
+              { title: 'Active Employees', value: stats.activeEmployees, icon: <FaCalendarCheck />, color: '#2ecc71', type: 'completed' },
+              { title: 'Pending Works', value: stats.pendingWorks, icon: <FaBriefcase />, color: '#f39c12', type: 'pending' },
+              { title: 'Completed Works', value: stats.completedWorks, icon: <FaCalendarCheck />, color: '#2ecc71', type: 'completed' }
+            ].map((stat, index) => (
+              <Col key={index} xs={12} sm={6} lg={3}>
+                <Card className="shadow-sm border-0 h-100 hover-lift">
+                  <Card.Body className="p-4">
+                    <div className="d-flex align-items-center">
+                      <div className={`stat-icon ${stat.type} rounded-circle d-flex align-items-center justify-content-center pulse`}>
+                        {stat.icon}
                       </div>
-                      <div className="stat-icon-container bg-primary-subtle">
-                        <FaUsers className="stat-icon text-primary" />
+                      <div className="ms-3">
+                        <h6 className="stat-label text-muted mb-1">{stat.title}</h6>
+                        <h3 className="stat-value fw-bold mb-0">{stat.value}</h3>
                       </div>
+                    </div>
+                    <div className="progress mt-3" style={{ height: "6px" }}>
+                      <div className="progress-bar" style={{ width: "100%", backgroundColor: stat.color }}></div>
                     </div>
                   </Card.Body>
                 </Card>
               </Col>
-              
-              <Col xs={12} sm={6} md={4} lg={3}>
-                <Card className="dashboard-card shadow-sm">
-                  <Card.Body>
-                    <div className="d-flex justify-content-between align-items-start">
-                      <div>
-                        <p className="stat-title text-muted mb-1">Pending Works</p>
-                        <h3 className="stat-number mb-2">{stats.pendingWorks}</h3>
-                      </div>
-                      <div className="stat-icon-container bg-warning-subtle">
-                        <FaBriefcase className="stat-icon text-warning" />
-                      </div>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
-              
-              <Col xs={12} sm={6} md={4} lg={3}>
-                <Card className="dashboard-card shadow-sm">
-                  <Card.Body>
-                    <div className="d-flex justify-content-between align-items-start">
-                      <div>
-                        <p className="stat-title text-muted mb-1">Completed Works</p>
-                        <h3 className="stat-number mb-2">{stats.completedWorks}</h3>
-                      </div>
-                      <div className="stat-icon-container bg-success-subtle">
-                        <FaCalendarCheck className="stat-icon text-success" />
-                      </div>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
-            
-            <Row className="g-3">
-              <Col xs={12} lg={8}>
-                <Card className="dashboard-card shadow-sm hover-lift">
-                  <Card.Header className="bg-transparent border-0">
-                    <div className="d-flex justify-content-between align-items-center">
-                      <h5 className="mb-0 fw-semibold">Recent Progress Updates</h5>
-                      <div className="dropdown">
-                        <span role="button" className="text-muted" aria-label="More options">
-                          <BsThreeDotsVertical />
-                        </span>
-                      </div>
-                    </div>
-                  </Card.Header>
-                  <div className="table-responsive d-none d-md-block">
-                    <Table responsive hover className="mb-0 align-middle">
-                      <thead className="table-light">
-                        <tr>
-                          <th>Employee</th>
-                          <th>Company</th>
-                          <th>Status</th>
-                          <th>Date</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {recentUpdates.map(update => (
-                          <tr key={update.id}>
-                            <td className="fw-medium">{update.name}</td>
-                            <td>{update.company}</td>
-                            <td>{getStatusBadge(update.status)}</td>
-                            <td><span className="text-nowrap">{update.date}</span></td>
-                          </tr>
+            ))}
+          </Row>
+
+          {/* Charts Row */}
+          <Row className="g-4 mb-4">
+            <Col xs={12} lg={8}>
+              <Card className="shadow-sm border-0 h-100 hover-lift">
+                <Card.Body className="p-4">
+                  <h5 className="card-title fw-bold mb-4">Top Performers Call Statistics</h5>
+                  <ResponsiveContainer width="100%" height={400}>
+                    <BarChart
+                      data={topPerformersData}
+                      margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis 
+                        dataKey="name"
+                        tick={{ fontSize: 12 }}
+                        interval={0}
+                        angle={-45}
+                        textAnchor="end"
+                        height={60}
+                      />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend verticalAlign="top" height={36}/>
+                      <Bar dataKey="completed" name="Completed Calls" fill="#3a7bd5" />
+                      <Bar dataKey="remaining" name="Remaining Calls" fill="#f39c12" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </Card.Body>
+              </Card>
+            </Col>
+
+            <Col xs={12} lg={4}>
+              <Card className="shadow-sm border-0 h-100 hover-lift">
+                <Card.Body className="p-4">
+                  <h5 className="card-title fw-bold mb-4">Task Distribution</h5>
+                  <ResponsiveContainer width="100%" height={400}>
+                    <PieChart>
+                      <Pie
+                        data={taskDistribution}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={70}
+                        outerRadius={90}
+                        paddingAngle={5}
+                        dataKey="value"
+                      >
+                        {taskDistribution.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={index === 0 ? '#3a7bd5' : index === 1 ? '#00c6ff' : '#f39c12'} />
                         ))}
-                      </tbody>
-                    </Table>
+                      </Pie>
+                      <Tooltip />
+                      <Legend verticalAlign="bottom" height={36}/>
+                    </PieChart>
+                  </ResponsiveContainer>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+
+          {/* Recent Activities */}
+          <Row className="g-4">
+            <Col xs={12}>
+              <Card className="shadow-sm border-0 hover-lift">
+                <Card.Body className="p-4">
+                  <div className="d-flex justify-content-between align-items-center mb-4">
+                    <h5 className="card-title fw-bold mb-0">Recent Activities</h5>
+                    <Badge 
+                      bg="primary" 
+                      className="rounded-pill d-flex align-items-center gap-1"
+                      style={{
+                        background: 'linear-gradient(135deg, #3a7bd5, #00c6ff)',
+                        padding: '0.5rem 0.75rem',
+                        fontSize: '0.875rem',
+                        fontWeight: '500'
+                      }}
+                    >
+                      <span>{recentActivities.length}</span>
+                      <span className="opacity-75">New</span>
+                    </Badge>
                   </div>
-                  
-                  <div className="d-md-none">
-                    {recentUpdates.map(update => (
-                      <div key={update.id} className="p-3 border-bottom">
-                        <div className="d-flex justify-content-between align-items-center mb-2">
-                          <h6 className="mb-0 fw-bold text-truncate me-2">{update.name}</h6>
-                          {getStatusBadge(update.status)}
-                        </div>
-                        <div className="d-flex flex-column flex-sm-row justify-content-between text-muted small">
-                          <span className="mb-1 mb-sm-0">{update.company}</span>
-                          <span className="text-nowrap">{update.date}</span>
+                  <div className="activities-list">
+                    {recentActivities.map((activity) => (
+                      <div key={activity.id} className="activity-item mb-3 pb-3 border-bottom">
+                        <div className="d-flex">
+                          <div className={`activity-icon me-3 bg-light rounded-circle p-2 status-${activity.status}`}>
+                            {activity.icon}
+                          </div>
+                          <div>
+                            <h6 className="mb-1 fw-semibold">{activity.action}</h6>
+                            <p className="mb-1">{activity.name}</p>
+                            <small className="text-muted">{activity.time}</small>
+                          </div>
                         </div>
                       </div>
                     ))}
                   </div>
-                  
-                  <Card.Footer className="bg-transparent border-0 text-center py-3">
-                    <a href="/admin/view-progress" className="btn btn-outline-primary btn-sm fw-medium" onClick={(e) => { e.preventDefault(); navigate('/admin/view-progress'); }}>
-                      View All Updates
-                    </a>
-                  </Card.Footer>
-                </Card>
-              </Col>
-              
-              <Col xs={12} lg={4}>
-                <Card className="dashboard-card shadow-sm hover-lift h-100">
-                  <Card.Header className="bg-transparent border-0 d-flex justify-content-between align-items-center">
-                    <h5 className="mb-0 fw-semibold">Recent Users</h5>
-                    <span role="button" className="text-muted" aria-label="More options">
-                      <BsThreeDotsVertical />
-                    </span>
-                  </Card.Header>
-                  
-                  {/* Desktop view */}
-                  <div className="d-none d-md-block">
-                    <Card.Body className="p-0">
-                      <div className="user-list">
-                        {recentUsers.map(user => (
-                          <div key={user.id} className="p-3 border-bottom">
-                            <div className="d-flex align-items-center">
-                              <div className="user-avatar me-3 flex-shrink-0">
-                                <div className="rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center" style={{width: "40px", height: "40px"}}>
-                                  {user.name.charAt(0).toUpperCase()}
-                                </div>
-                              </div>
-                              <div className="flex-grow-1 min-width-0">
-                                <h6 className="mb-1 text-truncate">{user.name}</h6>
-                                <p className="text-muted mb-0 small text-truncate">{user.email}</p>
-                              </div>
-                              <Badge 
-                                bg={user.status === 'active' ? 'success-subtle' : 'danger-subtle'} 
-                                className="ms-2 flex-shrink-0 hover-lift" 
-                                style={{
-                                  padding: '0.35rem 0.75rem',
-                                  borderRadius: '20px',
-                                  fontSize: '0.75rem',
-                                  fontWeight: '600',
-                                  textTransform: 'capitalize',
-                                  border: `1px solid ${user.status === 'active' ? '#28a745' : '#dc3545'}`,
-                                  color: user.status === 'active' ? '#28a745' : '#dc3545'
-                                }}
-                              >
-                                {user.status === 'active' ? '● Active' : '● Inactive'}
-                              </Badge>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </Card.Body>
-                  </div>
-                  {/* hello there */}
-                  
-                  {/* Mobile view */}
-                  <div className="d-md-none">
-                    <Card.Body className="p-0">
-                      <div className="user-list">
-                        {recentUsers.map(user => (
-                          <div key={user.id} className="p-2 border-bottom">
-                            <div className="d-flex align-items-center">
-                              <div className="user-avatar me-2 flex-shrink-0">
-                                <div className="rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center" style={{width: "35px", height: "35px", fontSize: "0.9rem"}}>
-                                  {user.name.charAt(0).toUpperCase()}
-                                </div>
-                              </div>
-                              <div className="flex-grow-1 min-width-0">
-                                <h6 className="mb-0 fs-6 text-truncate">{user.name}</h6>
-                                <p className="text-muted mb-0 small text-truncate" style={{fontSize: "0.75rem"}}>{user.email}</p>
-                              </div>
-                              <Badge bg={user.status === 'active' ? 'success' : 'danger'} className="ms-1 flex-shrink-0" pill size="sm">
-                                {user.status}
-                              </Badge>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </Card.Body>
-                  </div>
-                  
-                  <Card.Footer className="bg-transparent border-0 text-center py-2 py-md-3">
-                    <a href="/admin/view-employees" className="btn btn-outline-primary btn-sm fw-medium" onClick={(e) => { e.preventDefault(); navigate('/admin/view-employees'); }}>
-                      View All Employees
-                    </a>
-                  </Card.Footer>
-                </Card>
-              </Col>
-            </Row>
-            
-            {/* <Row>
-              <Col lg={12} className="mb-4">
-                <Card className="dashboard-card shadow-sm">
-                  <Card.Header className="bg-transparent border-0 d-flex justify-content-between align-items-center">
-                    <h5 className="mb-0">Recent Activities</h5>
-                    <BsThreeDotsVertical />
-                  </Card.Header>
-                  <Card.Body>
-                    <div className="activity-timeline">
-                      {recentActivities.map((activity, index) => (
-                        <div key={activity._id || index} className="activity-item d-flex align-items-start mb-3">
-                          <div className="activity-icon me-3">
-                            <div className="icon-circle bg-light">
-                              {activity.type === 'upload' && <FaFileUpload className="text-primary" />}
-                              {activity.type === 'status_change' && <FaExchangeAlt className="text-warning" />}
-                              {activity.type === 'new_user' && <FaUserPlus className="text-success" />}
-                            </div>
-                          </div>
-                          <div className="activity-content flex-grow-1">
-                            <p className="mb-1 fw-bold">{activity.title}</p>
-                            <p className="text-muted mb-0">{activity.description}</p>
-                            <small className="text-muted">
-                              {new Date(activity.timestamp).toLocaleString()}
-                            </small>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </Card.Body>
-                  <Card.Footer className="bg-transparent border-0 text-center">
-                    <button className="btn btn-link">View All Activities</button>
-                  </Card.Footer>
-                </Card>
-              </Col>
-            </Row> */}
-          </Container>
-        </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </main>
       </div>
     </div>
   );

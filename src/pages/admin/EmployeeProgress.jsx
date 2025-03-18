@@ -30,9 +30,7 @@ const EmployeeProgress = () => {
         const result = await response.json();
         
         if (result.success) {
-          // Use the viewStatistics data directly from the API response
           if (result.viewStatistics && result.viewStatistics.length > 0) {
-            // Map the data to match our component's expected format
             const formattedData = result.viewStatistics.map(stat => ({
               id: stat._id,
               name: stat.employeeName,
@@ -41,42 +39,8 @@ const EmployeeProgress = () => {
               remainingCalls: stat.notViewedCount
             }));
             
-            // Sort by completedCalls in descending order
             formattedData.sort((a, b) => b.completedCalls - a.completedCalls);
             setEmployeeData(formattedData);
-          } else {
-            // Fallback to the old method if viewStatistics is not available
-            const employeeMap = new Map();
-            
-            result.data.forEach(contact => {
-              const employeeId = contact.employeeId._id || contact.employeeId;
-              const employeeName = contact.employeeId.name || contact.employeeName;
-              
-              if (!employeeMap.has(employeeId)) {
-                employeeMap.set(employeeId, {
-                  id: employeeId,
-                  name: employeeName,
-                  totalCalls: 0,
-                  completedCalls: 0,
-                  remainingCalls: 0
-                });
-              }
-              
-              const employeeStats = employeeMap.get(employeeId);
-              employeeStats.totalCalls++;
-              
-              if (contact.view === 1) {
-                employeeStats.completedCalls++;
-              } else {
-                employeeStats.remainingCalls++;
-              }
-            });
-            
-            // Convert to array and sort by completedCalls in descending order
-            const sortedData = Array.from(employeeMap.values())
-              .sort((a, b) => b.completedCalls - a.completedCalls);
-            
-            setEmployeeData(sortedData);
           }
         } else {
           setError(result.message || 'Failed to fetch employee progress data');
@@ -171,15 +135,9 @@ Here's your current performance update:
 
 Keep up the good work!`;
 
-    // Encode the message for WhatsApp URL
     const encodedMessage = encodeURIComponent(message);
-    
-    // Open WhatsApp with the pre-filled message
-    // Note: phone number should include country code without '+' symbol
-    const phoneNumber = employee.phone?.replace(/\D/g, '') || ''; // Remove non-digits
+    const phoneNumber = employee.phone?.replace(/\D/g, '') || '';
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-    
-    // Open in new tab
     window.open(whatsappUrl, '_blank');
   };
 
@@ -390,14 +348,14 @@ Keep up the good work!`;
                             {employee.remainingCalls} calls remaining
                           </span>
                         </div>
-                        <button 
+                        {/* <button 
                           className="whatsapp-button"
                           onClick={() => handleWhatsAppMessage(employee)}
                           title="Send WhatsApp Message"
                         >
                           <MessageCircle size={16} />
                           Send Update
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                   );

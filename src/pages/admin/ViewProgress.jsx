@@ -168,6 +168,50 @@ const ViewProgress = () => {
     setSelectedDate('');
   };
 
+  const handleViewDetails = (item) => {
+    Swal.fire({
+      title: `<div class="modal-title">${item.name}</div>`,
+      html: `
+        <div class="details-modal">
+          <div class="details-section">
+            <h3>Contact Information</h3>
+            <p><strong>Company:</strong> ${item.companyName}</p>
+            <p><strong>Phone Number:</strong> ${item.phone}</p>
+          </div>
+
+          <div class="details-section">
+            <h3>Status Information</h3>
+            <p><strong>Current Status:</strong> 
+              <span class="status-text ${statusConfig[item.status]?.color || 'status-default'}">
+                ${statusConfig[item.status]?.label || item.status}
+              </span>
+            </p>
+            <p><strong>Last Updated:</strong> ${item.date}</p>
+          </div>
+
+          <div class="details-section">
+            <h3>Notes</h3>
+            <div class="details-notes">
+              ${item.notes || 'No notes available'}
+            </div>
+          </div>
+        </div>
+      `,
+      width: '600px',
+      showCloseButton: true,
+      showConfirmButton: false,
+      customClass: {
+        popup: 'details-modal-popup'
+      },
+      background: 'rgba(255, 255, 255, 0.98)',
+      backdrop: `
+        rgba(26, 35, 126, 0.4)
+        left top
+        no-repeat
+      `
+    });
+  };
+
   return (
     <div className="admin-container">
       <Sidebar />
@@ -184,15 +228,15 @@ const ViewProgress = () => {
               </div>
             </div>
             <div className="header-stats">
-              <div className="stat-box">
+              {/* <div className="stat-box">
                 <div className="stat-icon">
                   <Clock size={20} />
                 </div>
-                <div className="stat-text">
+                {/* <div className="stat-text">
                   <span className="stat-number">{filteredAndSortedData.length}</span>
                   <span className="stat-label">Pending</span>
-                </div>
-              </div>
+                </div> */}
+              {/* </div> */} 
             </div>
           </div>
 
@@ -341,7 +385,7 @@ const ViewProgress = () => {
                     </div>
 
                     <div className="item-footer">
-                      <button className="btn-secondary">
+                      <button className="btn-secondary" onClick={() => handleViewDetails(item)}>
                         <Eye size={16} />
                         View Details
                       </button>

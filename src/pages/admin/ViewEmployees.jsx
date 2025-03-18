@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { ChevronRight, Users, Search, Filter, UserCheck, UserX, Phone, Mail } from 'lucide-react';
 
 import Sidebar from "./Sidebar";
 import TopNav from "./TopNav";
-import "../../assets/ViewEmployees.css";
+import "../../assets/ViewProgress.css";
 
 const ViewEmployees = () => {
   const navigate = useNavigate();
@@ -13,14 +14,15 @@ const ViewEmployees = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [activeTab, setActiveTab] = useState('all');
 
   useEffect(() => {
-    // Check if user is logged in by checking sessionStorage
+    // Check if user is logged in
     const userId = sessionStorage.getItem("userId");
     const userRole = sessionStorage.getItem("userRole");
 
     if (!userId || userRole !== "admin") {
-      navigate("/"); // Redirect to login page if not logged in or not admin
+      navigate("/");
     }
 
     // Fetch employees data
@@ -44,143 +46,205 @@ const ViewEmployees = () => {
     const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
     const action = currentStatus === 'active' ? 'deactivate' : 'activate';
 
-    Swal.fire({
-      title: 'Are you sure?',
-      text: `Do you want to ${action} this employee?`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: `Yes, ${action} it!`
-    }).then(async (result) => {
+    try {
+      const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: `Do you want to ${action} this employee?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: `Yes, ${action}!`
+      });
+
       if (result.isConfirmed) {
-        try {
-          const response = await axios.put(`${import.meta.env.VITE_API_URL}/users/employees/${employeeId}`, {
-            status: newStatus
+        const response = await axios.put(`${import.meta.env.VITE_API_URL}/users/employees/${employeeId}`, {
+          status: newStatus
+        });
+
+        if (response.status === 200) {
+          const updatedEmployee = response.data.employee;
+          setEmployees(employees.map(emp => 
+            emp._id === employeeId ? updatedEmployee : emp
+          ));
+          
+          Swal.fire({
+            title: 'Updated!',
+            text: `Employee has been ${action}d successfully.`,
+            icon: 'success',
+            timer: 2000,
+            showConfirmButton: false
           });
-          if (response.status === 200) {
-            // Update the employees list with the new status
-            const updatedEmployee = response.data.employee;
-            setEmployees(employees.map(emp => 
-              emp._id === employeeId ? updatedEmployee : emp
-            ));
-            Swal.fire(
-              'Updated!',
-              `Employee has been ${action}d successfully.`,
-              'success'
-            );
-          }
-        } catch (err) {
-          Swal.fire(
-            'Error!',
-            err.response?.data?.message || 'Error updating employee status',
-            'error'
-          );
         }
       }
-    });
+    } catch (err) {
+      Swal.fire(
+        'Error!',
+        err.response?.data?.message || 'Error updating employee status',
+        'error'
+      );
+    }
   };
 
-  // Filter employees based on search term
-  const filteredEmployees = employees.filter((employee) =>
-    employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.phoneNumber.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter employees based on search and active tab
+  const filteredEmployees = useMemo(() => {
+    return employees.filter((employee) => {
+      const searchLower = searchTerm.toLowerCase();
+      const matchesSearch = !searchTerm || 
+        employee.name.toLowerCase().includes(searchLower) ||
+        employee.email.toLowerCase().includes(searchLower) ||
+        employee.phoneNumber.toLowerCase().includes(searchLower);
+      
+      const matchesTab = activeTab === 'all' || employee.status === activeTab;
+
+      return matchesSearch && matchesTab;
+    });
+  }, [employees, searchTerm, activeTab]);
 
   return (
-    <div className="app">
+    <div className="admin-container">
       <Sidebar />
       <div className="main-content">
-        <div className="content-wrapper">
-          <div className="content-header">
-            <h2>Employee Management</h2>
+        <div className="progress-container">
+          {/* Header Section */}
+          <div className="progress-header">
+            <div className="header-left">
+              <h1>Employee Management</h1>
+              <div className="breadcrumb">
+                <span>Dashboard</span>
+                <ChevronRight size={16} />
+                <span className="current">Employees</span>
+              </div>
+            </div>
           </div>
-          <div className="content-body">
+
+          {/* Status Tabs */}
+          <div className="status-tabs">
+            <button 
+              className={`tab ${activeTab === 'all' ? 'active' : ''}`}
+              onClick={() => setActiveTab('all')}
+            >
+              All Employees
+              <span className="tab-count">{employees.length}</span>
+            </button>
+            <button 
+              className={`tab ${activeTab === 'active' ? 'active' : ''}`}
+              onClick={() => setActiveTab('active')}
+            >
+              Active
+              <span className="tab-count">
+                {employees.filter(emp => emp.status === 'active').length}
+              </span>
+            </button>
+            <button 
+              className={`tab ${activeTab === 'inactive' ? 'active' : ''}`}
+              onClick={() => setActiveTab('inactive')}
+            >
+              Inactive
+              <span className="tab-count">
+                {employees.filter(emp => emp.status === 'inactive').length}
+              </span>
+            </button>
+          </div>
+
+          {/* Search Bar */}
+          <div className="search-filter-bar">
+            <div className="search-box">
+              <Search size={20} />
+              <input
+                type="text"
+                placeholder="Search by name, email, or phone..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              {searchTerm && (
+                <button className="clear-search" onClick={() => setSearchTerm("")}>
+                  ×
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Results Summary */}
+          <div className="results-summary">
+            Showing {filteredEmployees.length} of {employees.length} employees
+          </div>
+
+          {/* Employee List */}
+          <div className="progress-content">
             {loading ? (
-              <div className="loader-container">
-                <div className="loader-ring">
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                </div>
-                <p>Loading employee data...</p>
+              <div className="loading-state">
+                <div className="spinner"></div>
+                <span>Loading employees...</span>
               </div>
             ) : error ? (
-              <div className="error-container">
-                <div className="error-icon">!</div>
-                <div className="error-content">
-                  <h4>Error</h4>
-                  <p>{error}</p>
+              <div className="error-state">
+                <AlertCircle size={24} />
+                <p>{error}</p>
+              </div>
+            ) : filteredEmployees.length === 0 ? (
+              <div className="empty-state">
+                <div className="empty-icon">
+                  <Users size={48} />
                 </div>
+                <h3>No Employees Found</h3>
+                <p>Try adjusting your search criteria</p>
               </div>
             ) : (
-              <>
-                <div className="search-container">
-                  <div className="search-wrapper">
-                    <i className="fas fa-search search-icon"></i>
-                    <input
-                      type="text"
-                      placeholder="Search by name, email, or phone number..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="search-input"
-                    />
-                    {searchTerm && (
-                      <button
-                        className="search-clear"
-                        onClick={() => setSearchTerm("")}
-                      >
-                        ×
-                      </button>
-                    )}
+              <div className="progress-list">
+                {filteredEmployees.map((employee) => (
+                  <div key={employee._id} className="progress-item">
+                    <div className="item-header">
+                      <div className="user-info">
+                        <div className="user-avatar">{employee.name[0]}</div>
+                        <div className="user-details">
+                          <h3>{employee.name}</h3>
+                          <span>Employee</span>
+                        </div>
+                      </div>
+                      <div className="status-tag">
+                        <span className={`status status-${employee.status === 'active' ? 'called' : 'not-responding'}`}>
+                          {employee.status}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="item-body">
+                      <div className="info-grid">
+                        <div className="info-item">
+                          <Mail size={16} />
+                          <span>{employee.email}</span>
+                        </div>
+                        <div className="info-item">
+                          <Phone size={16} />
+                          <span>{employee.phoneNumber}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="item-footer">
+                      <div className="action-buttons">
+                        <button 
+                          className={`btn-${employee.status === 'active' ? 'danger' : 'success'}`}
+                          onClick={() => handleStatusToggle(employee._id, employee.status)}
+                        >
+                          {employee.status === 'active' ? (
+                            <>
+                              <UserX size={16} />
+                              Deactivate
+                            </>
+                          ) : (
+                            <>
+                              <UserCheck size={16} />
+                              Activate
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="table-container">
-                  <table className="employees-table">
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone Number</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredEmployees.length === 0 ? (
-                        <tr>
-                          <td colSpan="5" className="no-results">
-                            No employees found matching your search.
-                          </td>
-                        </tr>
-                      ) : (
-                        filteredEmployees.map((employee) => (
-                          <tr key={employee._id}>
-                            <td>{employee.name}</td>
-                            <td>{employee.email}</td>
-                            <td>{employee.phoneNumber}</td>
-                            <td>
-                              <span className={`status-badge ${employee.status}`}>
-                                {employee.status}
-                              </span>
-                            </td>
-                            <td>
-                              <button 
-                                className={`action-button ${employee.status === 'active' ? 'deactivate' : 'activate'}`}
-                                onClick={() => handleStatusToggle(employee._id, employee.status)}
-                              >
-                                {employee.status === 'active' ? 'Deactivate' : 'Activate'}
-                              </button>
-                            </td>
-                          </tr>
-                        ))
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </>
+                ))}
+              </div>
             )}
           </div>
         </div>

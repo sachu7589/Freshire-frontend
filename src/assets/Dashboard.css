@@ -375,3 +375,83 @@
   align-items: center;
   justify-content: center;
 }
+
+.content-wrapper {
+  padding: 20px;
+  background: #f8f9fa;
+  min-height: calc(100vh - 60px);
+}
+
+.content-header {
+  padding: 15px 0;
+  margin-bottom: 20px;
+}
+
+.content-header h1 {
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.breadcrumb {
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.stats-card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  transition: transform 0.2s;
+}
+
+.stats-card:hover {
+  transform: translateY(-5px);
+}
+
+.stats-label {
+  color: #6c757d;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.stats-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.stats-info {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+.stats-icon {
+  background: rgba(var(--bs-primary-rgb), 0.1);
+  padding: 15px;
+  border-radius: 8px;
+  color: var(--bs-primary);
+}
+
+.dashboard-card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+.table-responsive {
+  border-radius: 10px;
+}
+
+.table th {
+  font-weight: 600;
+  border-bottom-width: 1px;
+}
+
+.user-list .user-avatar {
+  width: 40px;
+  height: 40px;
+}

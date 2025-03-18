@@ -1,0 +1,117 @@
+.view-details-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .view-details-button:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .item-footer {
+    padding: 12px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  /* Modal Styles */
+  .details-container {
+    text-align: left;
+    padding: 20px;
+  }
+  
+  .detail-group {
+    margin-bottom: 20px;
+  }
+  
+  .detail-group h3 {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+  
+  .detail-group p {
+    margin: 5px 0;
+    color: #666;
+  }
+  
+  .details-popup {
+    max-width: 600px;
+    border-radius: 8px;
+  }
+  
+  .notes-section p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9em;
+    line-height: 1.5;
+  }
+  
+  /* Status Colors */
+  .status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+  
+  .status-interested {
+    background-color: #e3f2fd;
+    color: #1976d2;
+  }
+  
+  .status-not-interested {
+    background-color: #ffebee;
+    color: #d32f2f;
+  }
+  
+  .status-called {
+    background-color: #e8f5e9;
+    color: #388e3c;
+  }
+  
+  .status-not-responding {
+    background-color: #fff3e0;
+    color: #f57c00;
+  }
+  
+  /* Loading State */
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 40px;
+  }
+  
+  .spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+  }
+  
+  .empty-icon {
+    margin-bottom: 16px;
+    color: #999;
+  }

@@ -989,3 +989,39 @@
     text-align: center;
   }
 }
+
+/* Updated Backdrop Styles */
+.swal2-backdrop-show {
+  background: rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+.details-modal-popup {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Update the animation for a smoother opening effect */
+.swal2-show {
+  animation: modal-show 0.3s ease-out !important;
+}
+
+@keyframes modal-show {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Ensure the modal content remains sharp */
+.details-modal {
+  position: relative;
+  z-index: 1;
+}
