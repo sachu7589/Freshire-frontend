@@ -12,7 +12,7 @@ const ViewEmployees = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // sample commet
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     // Check if user is logged in by checking sessionStorage
@@ -81,68 +81,106 @@ const ViewEmployees = () => {
     });
   };
 
+  // Filter employees based on search term
+  const filteredEmployees = employees.filter((employee) =>
+    employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    employee.phoneNumber.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="app">
       <Sidebar />
       <div className="main-content">
-        <div style={{ position: 'sticky', top: 0, zIndex: 100, backgroundColor: 'white' }}>
-        </div>
-        <div className="content" style={{ height: 'calc(100vh - 60px)', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ position: 'sticky', top: 0, backgroundColor: 'white', padding: '20px 24px 0', zIndex: 99 }}>
-            <h2>Employee List</h2>
+        <div className="content-wrapper">
+          <div className="content-header">
+            <h2>Employee Management</h2>
           </div>
-          <div style={{ flex: 1, overflowY: 'auto', padding: '0 24px 24px' }}>
+          <div className="content-body">
             {loading ? (
-              <p>Loading...</p>
+              <div className="loader-container">
+                <div className="loader-ring">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+                <p>Loading employee data...</p>
+              </div>
             ) : error ? (
-              <p className="error-message">{error}</p>
+              <div className="error-container">
+                <div className="error-icon">!</div>
+                <div className="error-content">
+                  <h4>Error</h4>
+                  <p>{error}</p>
+                </div>
+              </div>
             ) : (
-              <table className="employees-table">
-                <thead style={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 98 }}>
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone Number</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {employees.map((employee) => (
-                    <tr key={employee._id}>
-                      <td>{employee.name}</td>
-                      <td>{employee.email}</td>
-                      <td>{employee.phoneNumber}</td>
-                      <td>
-                        <span style={{
-                          backgroundColor: employee.status === 'active' ? '#28a745' : '#dc3545',
-                          color: 'white',
-                          padding: '6px 12px',
-                          borderRadius: '20px',
-                          display: 'inline-block'
-                        }}>
-                          {employee.status}
-                        </span>
-                      </td>
-                      <td>
-                        <button 
-                          style={{
-                            backgroundColor: employee.status === 'active' ? '#dc3545' : '#28a745',
-                            color: 'white',
-                            border: 'none',
-                            padding: '8px 16px',
-                            borderRadius: '4px',
-                            cursor: 'pointer'
-                          }}
-                          onClick={() => handleStatusToggle(employee._id, employee.status)}
-                        >
-                          {employee.status === 'active' ? 'Deactivate' : 'Activate'}
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <>
+                <div className="search-container">
+                  <div className="search-wrapper">
+                    <i className="fas fa-search search-icon"></i>
+                    <input
+                      type="text"
+                      placeholder="Search by name, email, or phone number..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="search-input"
+                    />
+                    {searchTerm && (
+                      <button
+                        className="search-clear"
+                        onClick={() => setSearchTerm("")}
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+                </div>
+                <div className="table-container">
+                  <table className="employees-table">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredEmployees.length === 0 ? (
+                        <tr>
+                          <td colSpan="5" className="no-results">
+                            No employees found matching your search.
+                          </td>
+                        </tr>
+                      ) : (
+                        filteredEmployees.map((employee) => (
+                          <tr key={employee._id}>
+                            <td>{employee.name}</td>
+                            <td>{employee.email}</td>
+                            <td>{employee.phoneNumber}</td>
+                            <td>
+                              <span className={`status-badge ${employee.status}`}>
+                                {employee.status}
+                              </span>
+                            </td>
+                            <td>
+                              <button 
+                                className={`action-button ${employee.status === 'active' ? 'deactivate' : 'activate'}`}
+                                onClick={() => handleStatusToggle(employee._id, employee.status)}
+                              >
+                                {employee.status === 'active' ? 'Deactivate' : 'Activate'}
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </>
             )}
           </div>
         </div>
