@@ -10,6 +10,9 @@ import ViewProgress from './pages/admin/ViewProgress'
 import Landing from './pages/Landing'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import User_notconnected from './pages/user/User_notconnected';
+import EmployeeProgress from './pages/admin/EmployeeProgress';
+import AcceptResponse from './pages/admin/AcceptResponse';
+import RejectedResponse from './pages/admin/RejectedResponse';
 
 function App() {
   return (
@@ -26,6 +29,9 @@ function App() {
         <Route path="/user/dashboard" element={<User_dash />} />
         <Route path="/user/database" element={<User_database />} />
         <Route path="/user/notconnected" element={<User_notconnected />} />
+        <Route path="/admin/employee-progress" element={<EmployeeProgress />} />
+        <Route path="/admin/accept-response" element={<AcceptResponse />} />
+        <Route path="/admin/rejected-response" element={<RejectedResponse />} />
       </Routes>
     </BrowserRouter>
   )
