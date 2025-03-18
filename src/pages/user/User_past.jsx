@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Table, Button, Spinner, Alert, Modal, Form } from 'react-bootstrap';
 import Sidebar from './User_sidebar';
 import "../../assets/ViewProgress.css";
+import Swal from 'sweetalert2';
 
 const User_past = () => {
   const navigate = useNavigate();
@@ -103,19 +104,43 @@ const User_past = () => {
       const result = await response.json();
       
       if (result.success) {
-        // Update the local state with the edited data
         setProgressData(progressData.map(item => 
           item.id === currentItem.id 
             ? { ...item, status: editFormData.status, notes: editFormData.notes, view: 5 } 
             : item
         ));
         handleCloseModal();
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Contact updated successfully!',
+          timer: 2000,
+          showConfirmButton: false,
+          position: 'top-end',
+          toast: true
+        });
       } else {
-        setError(result.message || 'Failed to update contact');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: result.message || 'Failed to update contact',
+          timer: 2000,
+          showConfirmButton: false,
+          position: 'top-end',
+          toast: true
+        });
       }
     } catch (error) {
       console.error('Error updating contact:', error);
-      setError('An error occurred while updating the contact');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'An error occurred while updating the contact',
+        timer: 2000,
+        showConfirmButton: false,
+        position: 'top-end',
+        toast: true
+      });
     }
   };
 
@@ -126,8 +151,6 @@ const User_past = () => {
         <div className="content-header">
           <h2>My Past Contacts</h2>
         </div>
-        
-        {error && <Alert variant="danger">{error}</Alert>}
         
         {loading ? (
           <div className="text-center my-5">
