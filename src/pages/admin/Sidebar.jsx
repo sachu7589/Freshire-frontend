@@ -221,6 +221,23 @@ const Sidebar = () => {
 
           <li className="nav-item mb-2">
             <NavLink
+              to="/admin/edited-response"
+              className={({ isActive }) =>
+                `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
+              }
+              style={{ 
+                padding: '10px 15px', 
+                background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
+                transition: 'all 0.3s ease'
+              }}
+            >
+              <ClipboardList size={18} className="me-3" />
+              <span className="fw-medium">Edited Progress</span>
+            </NavLink>
+          </li>
+
+          <li className="nav-item mb-2">
+            <NavLink
               to="/admin/employee-progress"
               className={({ isActive }) =>
                 `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`

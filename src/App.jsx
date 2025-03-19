@@ -13,6 +13,8 @@ import User_notconnected from './pages/user/User_notconnected';
 import EmployeeProgress from './pages/admin/EmployeeProgress';
 import AcceptResponse from './pages/admin/AcceptResponse';
 import RejectedResponse from './pages/admin/RejectedResponse';
+import User_past from './pages/user/User_past';
+import EditedResponse from './pages/admin/EditedResponse';
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
         <Route path="/admin/employee-progress" element={<EmployeeProgress />} />
         <Route path="/admin/accept-response" element={<AcceptResponse />} />
         <Route path="/admin/rejected-response" element={<RejectedResponse />} />
+        <Route path="/user/past" element={<User_past />} />
+        <Route path="/admin/edited-response" element={<EditedResponse />} />
       </Routes>
     </BrowserRouter>
   )
