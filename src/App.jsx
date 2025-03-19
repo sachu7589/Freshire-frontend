@@ -15,6 +15,7 @@ import AcceptResponse from './pages/admin/AcceptResponse';
 import RejectedResponse from './pages/admin/RejectedResponse';
 import User_past from './pages/user/User_past';
 import EditedResponse from './pages/admin/EditedResponse';
+import EmailSent from './pages/admin/EmailSent';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path="/admin/rejected-response" element={<RejectedResponse />} />
         <Route path="/user/past" element={<User_past />} />
         <Route path="/admin/edited-response" element={<EditedResponse />} />
+        <Route path="/admin/email-sent" element={<EmailSent />} />
       </Routes>
     </BrowserRouter>
   )
