@@ -129,206 +129,222 @@ const Sidebar = () => {
           </div>
         </div>
 
-        <ul className="nav nav-pills flex-column mb-auto p-3" 
-            style={{ 
-              background: 'rgba(255,255,255,0.4)',
-              transition: 'transform 0.3s ease',
-              transform: isOpen ? 'translateX(0)' : 'translateX(-20px)'
-            }}>
-          <li className="nav-item mb-2">
-            <NavLink
-              to="/admin/dashboard"
-              className={({ isActive }) =>
-                `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
-              }
-              style={{ 
-                padding: '10px 15px', 
-                background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              <LayoutGrid size={18} className="me-3" />
-              <span className="fw-medium">Dashboard</span>
-            </NavLink>
-          </li>
-
-          <li className="nav-item mb-2">
-            <NavLink
-              to="/admin/view-employees"
-              className={({ isActive }) =>
-                `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
-              }
-              style={{ 
-                padding: '10px 15px', 
-                background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              <Users size={18} className="me-3" />
-              <span className="fw-medium">View Users</span>
-            </NavLink>
-          </li>
-
-          <li className="nav-item mb-2">
-            <NavLink
-              to="/admin/add-user"
-              className={({ isActive }) =>
-                `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
-              }
-              style={{ 
-                padding: '10px 15px', 
-                background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              <UserPlus size={18} className="me-3" />
-              <span className="fw-medium">Add User</span>
-            </NavLink>
-          </li>
-
-          <li className="nav-item mb-2">
-            <NavLink
-              to="/admin/assign-works"
-              className={({ isActive }) =>
-                `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
-              }
-              style={{ 
-                padding: '10px 15px', 
-                background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              <ClipboardList size={18} className="me-3" />
-              <span className="fw-medium">Assign Works</span>
-            </NavLink>
-          </li>
-
-          <li className="nav-item mb-2">
-            <NavLink
-              to="/admin/view-progress"
-              className={({ isActive }) =>
-                `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
-              }
-              style={{ 
-                padding: '10px 15px', 
-                background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              <LineChart size={18} className="me-3" />
-              <span className="fw-medium">View Progress</span>
-            </NavLink>
-          </li>
-
-          <li className="nav-item mb-2">
-            <NavLink
-              to="/admin/edited-response"
-              className={({ isActive }) =>
-                `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
-              }
-              style={{ 
-                padding: '10px 15px', 
-                background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              <ClipboardList size={18} className="me-3" />
-              <span className="fw-medium">Edited Progress</span>
-            </NavLink>
-          </li>
-
-          <li className="nav-item mb-2">
-            <NavLink
-              to="/admin/employee-progress"
-              className={({ isActive }) =>
-                `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
-              }
-              style={{ 
-                padding: '10px 15px', 
-                background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              <BarChart size={18} className="me-3" />
-              <span className="fw-medium">Employee Progress</span>
-            </NavLink>
-          </li>
-
-          <li className="nav-item mb-2">
-            <NavLink
-              to="/admin/accept-response"
-              className={({ isActive }) =>
-                `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
-              }
-              style={{ 
-                padding: '10px 15px', 
-                background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              <CheckCircle size={18} className="me-3" />
-              <span className="fw-medium">Accepted Data</span>
-            </NavLink>
-          </li>
-
-          <li className="nav-item mb-2">
-            <NavLink
-              to="/admin/rejected-response"
-              className={({ isActive }) =>
-                `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
-              }
-              style={{ 
-                padding: '10px 15px', 
-                background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              <XCircle size={18} className="me-3" />
-              <span className="fw-medium">Rejected Data</span>
-            </NavLink>
-          </li>
-
-          <li className="nav-item mb-2">
-            <NavLink
-              to="/admin/email-sent"
-              className={({ isActive }) =>
-                `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
-              }
-              style={{ 
-                padding: '10px 15px', 
-                background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              <Mail size={18} className="me-3" />
-              <span className="fw-medium">Send Email</span>
-            </NavLink>
-          </li>
-        </ul>
-
-        <div className="p-3 mt-auto" 
+        {/* Scrollable Navigation */}
+        <div className="flex-grow-1 overflow-auto" 
              style={{ 
-               background: 'rgba(255,255,255,0.6)',
-               transition: 'transform 0.3s ease',
-               transform: isOpen ? 'translateX(0)' : 'translateX(-20px)'
+               position: 'relative',
+               height: 'calc(100vh - 200px)' // Adjust based on header + footer height
              }}>
-          <button 
-            className="btn btn-danger rounded-pill d-flex align-items-center justify-content-center gap-2 w-100 py-2 shadow-sm" 
-            onClick={handleLogout}
-            style={{ transition: 'all 0.3s ease' }}
-          >
-            <LogOut size={18} />
-            <span className="fw-medium">Logout</span>
-          </button>
+          <ul className="nav nav-pills flex-column p-3" 
+              style={{ 
+                background: 'rgba(255,255,255,0.4)',
+                transition: 'transform 0.3s ease',
+                transform: isOpen ? 'translateX(0)' : 'translateX(-20px)',
+                minWidth: '230px'
+              }}>
+            <li className="nav-item mb-2">
+              <NavLink
+                to="/admin/dashboard"
+                className={({ isActive }) =>
+                  `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
+                }
+                style={{ 
+                  padding: '10px 15px', 
+                  background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                <LayoutGrid size={18} className="me-3" />
+                <span className="fw-medium">Dashboard</span>
+              </NavLink>
+            </li>
+
+            <li className="nav-item mb-2">
+              <NavLink
+                to="/admin/view-employees"
+                className={({ isActive }) =>
+                  `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
+                }
+                style={{ 
+                  padding: '10px 15px', 
+                  background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                <Users size={18} className="me-3" />
+                <span className="fw-medium">View Users</span>
+              </NavLink>
+            </li>
+
+            <li className="nav-item mb-2">
+              <NavLink
+                to="/admin/add-user"
+                className={({ isActive }) =>
+                  `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
+                }
+                style={{ 
+                  padding: '10px 15px', 
+                  background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                <UserPlus size={18} className="me-3" />
+                <span className="fw-medium">Add User</span>
+              </NavLink>
+            </li>
+
+            <li className="nav-item mb-2">
+              <NavLink
+                to="/admin/assign-works"
+                className={({ isActive }) =>
+                  `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
+                }
+                style={{ 
+                  padding: '10px 15px', 
+                  background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                <ClipboardList size={18} className="me-3" />
+                <span className="fw-medium">Assign Works</span>
+              </NavLink>
+            </li>
+
+            <li className="nav-item mb-2">
+              <NavLink
+                to="/admin/view-progress"
+                className={({ isActive }) =>
+                  `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
+                }
+                style={{ 
+                  padding: '10px 15px', 
+                  background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                <LineChart size={18} className="me-3" />
+                <span className="fw-medium">View Progress</span>
+              </NavLink>
+            </li>
+
+            <li className="nav-item mb-2">
+              <NavLink
+                to="/admin/edited-response"
+                className={({ isActive }) =>
+                  `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
+                }
+                style={{ 
+                  padding: '10px 15px', 
+                  background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                <ClipboardList size={18} className="me-3" />
+                <span className="fw-medium">Edited Progress</span>
+              </NavLink>
+            </li>
+
+            <li className="nav-item mb-2">
+              <NavLink
+                to="/admin/employee-progress"
+                className={({ isActive }) =>
+                  `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
+                }
+                style={{ 
+                  padding: '10px 15px', 
+                  background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                <BarChart size={18} className="me-3" />
+                <span className="fw-medium">Employee Progress</span>
+              </NavLink>
+            </li>
+
+            <li className="nav-item mb-2">
+              <NavLink
+                to="/admin/accept-response"
+                className={({ isActive }) =>
+                  `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
+                }
+                style={{ 
+                  padding: '10px 15px', 
+                  background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                <CheckCircle size={18} className="me-3" />
+                <span className="fw-medium">Accepted Data</span>
+              </NavLink>
+            </li>
+
+            <li className="nav-item mb-2">
+              <NavLink
+                to="/admin/rejected-response"
+                className={({ isActive }) =>
+                  `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
+                }
+                style={{ 
+                  padding: '10px 15px', 
+                  background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                <XCircle size={18} className="me-3" />
+                <span className="fw-medium">Rejected Data</span>
+              </NavLink>
+            </li>
+
+            <li className="nav-item mb-2">
+              <NavLink
+                to="/admin/email-sent"
+                className={({ isActive }) =>
+                  `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
+                }
+                style={{ 
+                  padding: '10px 15px', 
+                  background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                <Mail size={18} className="me-3" />
+                <span className="fw-medium">Send Email</span>
+              </NavLink>
+            </li>
+          </ul>
         </div>
-        
-        <div className="p-3 text-center" 
-             style={{ 
-               background: 'rgba(255,255,255,0.4)',
-               transition: 'transform 0.3s ease',
-               transform: isOpen ? 'translateX(0)' : 'translateX(-20px)'
-             }}>
-          <small className="text-muted">Freshire © 2025</small>
+
+        {/* Fixed Footer with Logout */}
+        <div style={{ 
+          position: 'fixed',
+          bottom: 0,
+          width: '250px',
+          background: 'rgba(255,255,255,0.9)',
+          borderTop: '1px solid rgba(0,0,0,0.1)'
+        }}>
+          <div className="p-3" 
+               style={{ 
+                 transition: 'transform 0.3s ease',
+                 transform: isOpen ? 'translateX(0)' : 'translateX(-20px)'
+               }}>
+            <button 
+              className="btn btn-danger rounded-pill d-flex align-items-center justify-content-center gap-2 w-100 py-2 shadow-sm" 
+              onClick={handleLogout}
+              style={{ transition: 'all 0.3s ease' }}
+            >
+              <LogOut size={16} />
+              <span className="fw-medium">Logout</span>
+            </button>
+          </div>
+          
+          <div className="p-2 text-center" 
+               style={{ 
+                 background: 'rgba(255,255,255,0.4)',
+                 transition: 'transform 0.3s ease',
+                 transform: isOpen ? 'translateX(0)' : 'translateX(-20px)'
+               }}>
+            <small className="text-muted">Freshire © 2025</small>
+          </div>
         </div>
       </div>
 

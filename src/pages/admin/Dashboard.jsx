@@ -84,6 +84,13 @@ const Dashboard = () => {
   // Add new state for top performers data
   const [topPerformersData, setTopPerformersData] = useState([]);
 
+  const conversionRates = [
+    { name: "Interested", value: 35, color: "#2ecc71", icon: "✓", rawValue: 35, totalCalls: 102 },
+    { name: "Not Interested", value: 25, color: "#e74c3c", icon: "×", rawValue: 25, totalCalls: 102 },
+    { name: "Callback", value: 20, color: "#f39c12", icon: "↻", rawValue: 20, totalCalls: 102 },
+    { name: "No Response", value: 20, color: "#95a5a6", icon: "−", rawValue: 20, totalCalls: 102 }
+  ];
+
   useEffect(() => {
     // Check if user is logged in by checking sessionStorage
     const userId = sessionStorage.getItem("userId");
@@ -257,6 +264,7 @@ const Dashboard = () => {
                         <h6 className="stat-label text-muted mb-1">{stat.title}</h6>
                         <h3 className="stat-value fw-bold mb-0">{stat.value}</h3>
                       </div>
+
                     </div>
                     <div className="progress mt-3" style={{ height: "6px" }}>
                       <div className="progress-bar" style={{ width: "100%", backgroundColor: stat.color }}></div>
@@ -301,26 +309,82 @@ const Dashboard = () => {
             <Col xs={12} lg={4}>
               <Card className="shadow-sm border-0 h-100 hover-lift">
                 <Card.Body className="p-4">
-                  <h5 className="card-title fw-bold mb-4">Task Distribution</h5>
-                  <ResponsiveContainer width="100%" height={400}>
+                  <div className="d-flex justify-content-between align-items-center mb-4">
+                    <h5 className="card-title fw-bold mb-0">Conversion Rates</h5>
+                    <small className="text-muted">Last 30 days</small>
+                  </div>
+                  
+                  <ResponsiveContainer width="100%" height={300}>
                     <PieChart>
                       <Pie
-                        data={taskDistribution}
+                        data={conversionRates}
                         cx="50%"
                         cy="50%"
-                        innerRadius={70}
-                        outerRadius={90}
-                        paddingAngle={5}
+                        innerRadius={60}
+                        outerRadius={80}
+                        paddingAngle={3}
                         dataKey="value"
+                        strokeWidth={2}
+                        stroke="#ffffff"
                       >
-                        {taskDistribution.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={index === 0 ? '#3a7bd5' : index === 1 ? '#00c6ff' : '#f39c12'} />
+                        {conversionRates.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
                         ))}
                       </Pie>
-                      <Tooltip />
-                      <Legend verticalAlign="bottom" height={36}/>
+                      <Tooltip 
+                        contentStyle={{
+                          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                          borderRadius: '8px',
+                          border: 'none',
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+                        }}
+                        formatter={(value) => [`${value}%`, 'Percentage']}
+                      />
                     </PieChart>
                   </ResponsiveContainer>
+
+                  <div className="conversion-stats mt-3">
+                    {conversionRates.map((item, index) => (
+                      <div 
+                        key={index}
+                        className="d-flex align-items-center justify-content-between p-2 mb-2"
+                        style={{
+                          backgroundColor: `${item.color}15`,
+                          borderRadius: '8px',
+                        }}
+                      >
+                        <div className="d-flex align-items-center">
+                          <div
+                            className="d-flex align-items-center justify-content-center me-2"
+                            style={{
+                              backgroundColor: item.color,
+                              color: 'white',
+                              width: '24px',
+                              height: '24px',
+                              borderRadius: '6px',
+                              fontSize: '14px'
+                            }}
+                          >
+                            {item.icon}
+                          </div>
+                          <span style={{ color: '#444', fontSize: '0.9rem' }}>
+                            {item.name}
+                            <span className="ms-2" style={{ color: '#666', fontSize: '0.8rem' }}>
+                              ({item.rawValue}/{item.totalCalls})
+                            </span>
+                          </span>
+                        </div>
+                        <div className="d-flex align-items-center">
+                          <span 
+                            className="fw-bold"
+                            style={{ color: item.color }}
+                          >
+                            {item.value}%
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </Card.Body>
               </Card>
             </Col>

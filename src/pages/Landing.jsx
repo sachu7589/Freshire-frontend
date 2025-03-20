@@ -28,7 +28,7 @@ function Landing() {
         background: 'linear-gradient(135deg, #f8fafc 0%, #e6f0ff 100%)',
         width: '100%',
         maxWidth: '100%',
-        padding: '15rem 2rem 6rem 2rem', /* Adjusted padding for mobile */
+        padding: '8rem 2rem 6rem 2rem',
         borderBottom: '5px solid #233ce6',
         minHeight: '100vh'
       }}> 
@@ -288,7 +288,7 @@ function Landing() {
 
       <div className="policy-section" id='policy-section' style={{
         background: 'white',
-        padding: '8rem 1.5rem 4rem',
+        padding: '6rem 1rem 4rem',
         width: '100%',
         minHeight: '100dvh'
       }}>
@@ -362,8 +362,27 @@ function Landing() {
         </div>
       </div>
       
-      {/* Add responsive media query styles */}
+      {/* Enhanced media queries for better mobile responsiveness */}
       <style jsx>{`
+        @media (max-width: 1024px) {
+          .landing-container {
+            padding: 7rem 1.5rem 5rem 1.5rem;
+          }
+          
+          .landing-text {
+            text-align: center;
+            margin: 0 auto;
+          }
+          
+          .feature-badges {
+            justify-content: center;
+          }
+          
+          .cta-container {
+            justify-content: center;
+          }
+        }
+
         @media (max-width: 768px) {
           .landing-nav {
             padding: 0.75rem 1rem;
@@ -373,19 +392,27 @@ function Landing() {
             height: 40px;
           }
           
-          .landing-container {
-            padding-left: 1rem;
-            padding-right: 1rem;
+          .dashboard-preview {
+            transform: none !important;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
           }
           
-          .dashboard-preview {
-            transform: perspective(1000px) rotateY(0) rotateX(0) !important;
+          .policy-card {
+            padding: 1.5rem;
+          }
+          
+          .landing-text h1 {
+            font-size: 2rem;
+          }
+          
+          .subtitle {
+            font-size: 1rem;
           }
         }
         
         @media (max-width: 480px) {
           .landing-nav {
-            padding: 0.5rem;
+            padding: 0.5rem 1rem;
           }
           
           .landing-logo img {
@@ -397,15 +424,32 @@ function Landing() {
             font-size: 0.9rem;
           }
           
+          .landing-container {
+            padding: 6rem 1rem 4rem 1rem;
+          }
+          
           .cta-container {
             flex-direction: column;
             width: 100%;
+            gap: 0.75rem;
           }
           
           .cta-container button,
           .cta-container a {
             width: 100%;
             text-align: center;
+          }
+          
+          .dashboard-stats {
+            grid-template-columns: 1fr;
+          }
+          
+          .dashboard-content {
+            padding: 1rem;
+          }
+          
+          .policy-card {
+            padding: 1.25rem;
           }
         }
       `}</style>
