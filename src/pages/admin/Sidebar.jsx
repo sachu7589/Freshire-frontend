@@ -11,7 +11,8 @@ import {
   BarChart,
   CheckCircle,
   XCircle,
-  Mail
+  Mail,
+  ChevronDown
 } from "lucide-react";
 import { useState, useEffect } from 'react';
 import Swal from "sweetalert2";
@@ -21,6 +22,7 @@ const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(window.innerWidth > 768);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const userName = sessionStorage.getItem("userName") || "User";
+  const [showLogout, setShowLogout] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -52,6 +54,10 @@ const Sidebar = () => {
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
+  };
+
+  const toggleLogout = () => {
+    setShowLogout(!showLogout);
   };
 
   return (
@@ -98,33 +104,68 @@ const Sidebar = () => {
               style={{ height: '50px', width: 'auto' }}
             />
           </div>
-          <div className="d-flex align-items-center">
-            <div className="bg-light rounded-circle d-flex align-items-center justify-content-center" 
-                 style={{ width: '45px', height: '45px' }}>
-              <User size={24} className="text-primary" />
+          <div className="mb-3">
+            <div className="d-flex align-items-center position-relative" 
+                 style={{ 
+                   cursor: 'pointer',
+                   padding: '8px',
+                   borderRadius: '8px',
+                   transition: 'all 0.2s ease',
+                   background: showLogout ? 'rgba(0,0,0,0.05)' : 'transparent'
+                 }}
+                 onClick={toggleLogout}
+                 title="Click to show logout option">
+              <div className="bg-light rounded-circle d-flex align-items-center justify-content-center" 
+                   style={{ width: '45px', height: '45px' }}>
+                <User size={24} className="text-primary" />
+              </div>
+              <div className="ms-3 flex-grow-1">
+                <h6 className="text-dark mb-0">{userName}</h6>
+                <small className="text-muted">
+                  {(() => {
+                    switch (userName) {
+                      case 'Aswin Chacko':
+                        return 'Chief Marketing Officer';
+                      case 'Sachu saji':
+                        return 'Chief Technology Officer';
+                      case 'Aswin Kumar Ps':
+                        return 'Chief Sales Officer';
+                      case 'Eapen Thomas':
+                        return 'Chief Financial Officer';
+                      case 'Aromal p Girish':
+                        return 'Chief Outreach Officer';
+                      case 'Chris Benny':
+                        return 'Chief Operation Officer';
+                      default:
+                        return 'Administrator';
+                    }
+                  })()}
+                </small>
+              </div>
+              <ChevronDown 
+                size={20} 
+                className="text-muted ms-2"
+                style={{ 
+                  transform: showLogout ? 'rotate(180deg)' : 'rotate(0)',
+                  transition: 'transform 0.3s ease'
+                }}
+              />
             </div>
-            <div className="ms-3">
-              <h6 className="text-dark mb-0">{userName}</h6>
-              <small className="text-muted">
-                {(() => {
-                  switch (userName) {
-                    case 'Aswin Chacko':
-                      return 'Chief Marketing Officer';
-                    case 'Sachu saji':
-                      return 'Chief Technology Officer';
-                    case 'Aswin Kumar Ps':
-                      return 'Chief Sales Officer';
-                    case 'Eapen Thomas':
-                      return 'Chief Financial Officer';
-                    case 'Aromal p Girish':
-                      return 'Chief Outreach Officer';
-                    case 'Chris Benny':
-                      return 'Chief Operation Officer';
-                    default:
-                      return 'Administrator';
-                  }
-                })()}
-              </small>
+            
+            <div style={{
+              maxHeight: showLogout ? '60px' : '0',
+              overflow: 'hidden',
+              transition: 'max-height 0.3s ease',
+              marginTop: showLogout ? '10px' : '0'
+            }}>
+              <button 
+                className="btn btn-danger rounded-pill d-flex align-items-center justify-content-center gap-2 w-100 py-2 shadow-sm" 
+                onClick={handleLogout}
+                style={{ transition: 'all 0.3s ease' }}
+              >
+                <LogOut size={16} />
+                <span className="fw-medium">Logout</span>
+              </button>
             </div>
           </div>
         </div>
@@ -314,7 +355,7 @@ const Sidebar = () => {
           </ul>
         </div>
 
-        {/* Fixed Footer with Logout */}
+        {/* Footer - Remove logout button and keep only copyright */}
         <div style={{ 
           position: 'fixed',
           bottom: 0,
@@ -322,28 +363,12 @@ const Sidebar = () => {
           background: 'rgba(255,255,255,0.9)',
           borderTop: '1px solid rgba(0,0,0,0.1)'
         }}>
-          <div className="p-3" 
-               style={{ 
-                 transition: 'transform 0.3s ease',
-                 transform: isOpen ? 'translateX(0)' : 'translateX(-20px)'
-               }}>
-            <button 
-              className="btn btn-danger rounded-pill d-flex align-items-center justify-content-center gap-2 w-100 py-2 shadow-sm" 
-              onClick={handleLogout}
-              style={{ transition: 'all 0.3s ease' }}
-            >
-              <LogOut size={16} />
-              <span className="fw-medium">Logout</span>
-            </button>
-          </div>
-          
           <div className="p-2 text-center" 
                style={{ 
                  background: 'rgba(255,255,255,0.4)',
                  transition: 'transform 0.3s ease',
                  transform: isOpen ? 'translateX(0)' : 'translateX(-20px)'
                }}>
-            <small className="text-muted">Freshire © 2025</small>
           </div>
         </div>
       </div>
