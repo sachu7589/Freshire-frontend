@@ -72,9 +72,9 @@ const Sidebar = () => {
         <button 
           className="btn btn-primary rounded-circle shadow" 
           onClick={toggleSidebar}
-          style={{ padding: '10px', width: '45px', height: '45px' }}
+          style={{ padding: '10px', width: '40px', height: '40px' }}
         >
-          <Menu size={24} />
+          <Menu size={20} />
         </button>
       </div>
       
@@ -88,7 +88,8 @@ const Sidebar = () => {
              overflow: 'hidden',
              background: 'transparent',
              backdropFilter: 'blur(10px)',
-             boxShadow: isOpen ? '0 0 20px rgba(0,0,0,0.05)' : 'none'
+             boxShadow: isOpen ? '0 0 20px rgba(0,0,0,0.05)' : 'none',
+             fontSize: '0.85rem'
            }}>
         
         <div className="p-3 border-bottom" 
@@ -97,18 +98,18 @@ const Sidebar = () => {
                transition: 'transform 0.3s ease',
                transform: isOpen ? 'translateX(0)' : 'translateX(-20px)'
              }}>
-          <div className="text-center mb-3">
+          <div className="text-center mb-2">
             <img 
               src="/logo.png" 
               alt="Freshire Logo" 
-              style={{ height: '50px', width: 'auto' }}
+              style={{ height: '40px', width: 'auto' }}
             />
           </div>
-          <div className="mb-3">
+          <div className="mb-2">
             <div className="d-flex align-items-center position-relative" 
                  style={{ 
                    cursor: 'pointer',
-                   padding: '8px',
+                   padding: '6px',
                    borderRadius: '8px',
                    transition: 'all 0.2s ease',
                    background: showLogout ? 'rgba(0,0,0,0.05)' : 'transparent'
@@ -116,12 +117,12 @@ const Sidebar = () => {
                  onClick={toggleLogout}
                  title="Click to show logout option">
               <div className="bg-light rounded-circle d-flex align-items-center justify-content-center" 
-                   style={{ width: '45px', height: '45px' }}>
-                <User size={24} className="text-primary" />
+                   style={{ width: '38px', height: '38px' }}>
+                <User size={18} className="text-primary" />
               </div>
-              <div className="ms-3 flex-grow-1">
-                <h6 className="text-dark mb-0">{userName}</h6>
-                <small className="text-muted">
+              <div className="ms-2 flex-grow-1">
+                <h6 className="text-dark mb-0 fs-6" style={{ fontSize: '0.9rem' }}>{userName}</h6>
+                <small className="text-muted" style={{ fontSize: '0.75rem' }}>
                   {(() => {
                     switch (userName) {
                       case 'Aswin Chacko':
@@ -143,7 +144,7 @@ const Sidebar = () => {
                 </small>
               </div>
               <ChevronDown 
-                size={20} 
+                size={16} 
                 className="text-muted ms-2"
                 style={{ 
                   transform: showLogout ? 'rotate(180deg)' : 'rotate(0)',
@@ -153,17 +154,17 @@ const Sidebar = () => {
             </div>
             
             <div style={{
-              maxHeight: showLogout ? '60px' : '0',
+              maxHeight: showLogout ? '50px' : '0',
               overflow: 'hidden',
               transition: 'max-height 0.3s ease',
-              marginTop: showLogout ? '10px' : '0'
+              marginTop: showLogout ? '8px' : '0'
             }}>
               <button 
-                className="btn btn-danger rounded-pill d-flex align-items-center justify-content-center gap-2 w-100 py-2 shadow-sm" 
+                className="btn btn-danger rounded-pill d-flex align-items-center justify-content-center gap-2 w-100 py-1 shadow-sm" 
                 onClick={handleLogout}
-                style={{ transition: 'all 0.3s ease' }}
+                style={{ transition: 'all 0.3s ease', fontSize: '0.8rem' }}
               >
-                <LogOut size={16} />
+                <LogOut size={14} />
                 <span className="fw-medium">Logout</span>
               </button>
             </div>
@@ -174,181 +175,192 @@ const Sidebar = () => {
         <div className="flex-grow-1 overflow-auto" 
              style={{ 
                position: 'relative',
-               height: 'calc(100vh - 200px)' // Adjust based on header + footer height
+               height: 'calc(100vh - 180px)' // Adjusted for smaller header
              }}>
-          <ul className="nav nav-pills flex-column p-3" 
+          <ul className="nav nav-pills flex-column p-2" 
               style={{ 
                 background: 'rgba(255,255,255,0.4)',
                 transition: 'transform 0.3s ease',
                 transform: isOpen ? 'translateX(0)' : 'translateX(-20px)',
-                minWidth: '230px'
+                minWidth: '230px',
+                fontSize: '0.85rem'
               }}>
-            <li className="nav-item mb-2">
+            <li className="nav-item mb-1">
               <NavLink
                 to="/admin/dashboard"
                 className={({ isActive }) =>
                   `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
                 }
                 style={{ 
-                  padding: '10px 15px', 
+                  padding: '7px 12px', 
                   background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
-                  transition: 'all 0.3s ease'
+                  transition: 'all 0.3s ease',
+                  fontSize: '0.85rem'
                 }}
               >
-                <LayoutGrid size={18} className="me-3" />
+                <LayoutGrid size={15} className="me-2" />
                 <span className="fw-medium">Dashboard</span>
               </NavLink>
             </li>
 
-            <li className="nav-item mb-2">
+            <li className="nav-item mb-1">
               <NavLink
                 to="/admin/view-employees"
                 className={({ isActive }) =>
                   `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
                 }
                 style={{ 
-                  padding: '10px 15px', 
+                  padding: '7px 12px', 
                   background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
-                  transition: 'all 0.3s ease'
+                  transition: 'all 0.3s ease',
+                  fontSize: '0.85rem'
                 }}
               >
-                <Users size={18} className="me-3" />
+                <Users size={15} className="me-2" />
                 <span className="fw-medium">View Users</span>
               </NavLink>
             </li>
 
-            <li className="nav-item mb-2">
+            <li className="nav-item mb-1">
               <NavLink
                 to="/admin/add-user"
                 className={({ isActive }) =>
                   `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
                 }
                 style={{ 
-                  padding: '10px 15px', 
+                  padding: '7px 12px', 
                   background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
-                  transition: 'all 0.3s ease'
+                  transition: 'all 0.3s ease',
+                  fontSize: '0.85rem'
                 }}
               >
-                <UserPlus size={18} className="me-3" />
+                <UserPlus size={15} className="me-2" />
                 <span className="fw-medium">Add User</span>
               </NavLink>
             </li>
 
-            <li className="nav-item mb-2">
+            <li className="nav-item mb-1">
               <NavLink
                 to="/admin/assign-works"
                 className={({ isActive }) =>
                   `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
                 }
                 style={{ 
-                  padding: '10px 15px', 
+                  padding: '7px 12px', 
                   background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
-                  transition: 'all 0.3s ease'
+                  transition: 'all 0.3s ease',
+                  fontSize: '0.85rem'
                 }}
               >
-                <ClipboardList size={18} className="me-3" />
+                <ClipboardList size={15} className="me-2" />
                 <span className="fw-medium">Assign Works</span>
               </NavLink>
             </li>
 
-            <li className="nav-item mb-2">
+            <li className="nav-item mb-1">
               <NavLink
                 to="/admin/view-progress"
                 className={({ isActive }) =>
                   `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
                 }
                 style={{ 
-                  padding: '10px 15px', 
+                  padding: '7px 12px', 
                   background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
-                  transition: 'all 0.3s ease'
+                  transition: 'all 0.3s ease',
+                  fontSize: '0.85rem'
                 }}
               >
-                <LineChart size={18} className="me-3" />
+                <LineChart size={15} className="me-2" />
                 <span className="fw-medium">View Progress</span>
               </NavLink>
             </li>
 
-            <li className="nav-item mb-2">
+            <li className="nav-item mb-1">
               <NavLink
                 to="/admin/edited-response"
                 className={({ isActive }) =>
                   `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
                 }
                 style={{ 
-                  padding: '10px 15px', 
+                  padding: '7px 12px', 
                   background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
-                  transition: 'all 0.3s ease'
+                  transition: 'all 0.3s ease',
+                  fontSize: '0.85rem'
                 }}
               >
-                <ClipboardList size={18} className="me-3" />
+                <ClipboardList size={15} className="me-2" />
                 <span className="fw-medium">Edited Progress</span>
               </NavLink>
             </li>
 
-            <li className="nav-item mb-2">
+            <li className="nav-item mb-1">
               <NavLink
                 to="/admin/employee-progress"
                 className={({ isActive }) =>
                   `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
                 }
                 style={{ 
-                  padding: '10px 15px', 
+                  padding: '7px 12px', 
                   background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
-                  transition: 'all 0.3s ease'
+                  transition: 'all 0.3s ease',
+                  fontSize: '0.85rem'
                 }}
               >
-                <BarChart size={18} className="me-3" />
+                <BarChart size={15} className="me-2" />
                 <span className="fw-medium">Employee Progress</span>
               </NavLink>
             </li>
 
-            <li className="nav-item mb-2">
+            <li className="nav-item mb-1">
               <NavLink
                 to="/admin/accept-response"
                 className={({ isActive }) =>
                   `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
                 }
                 style={{ 
-                  padding: '10px 15px', 
+                  padding: '7px 12px', 
                   background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
-                  transition: 'all 0.3s ease'
+                  transition: 'all 0.3s ease',
+                  fontSize: '0.85rem'
                 }}
               >
-                <CheckCircle size={18} className="me-3" />
+                <CheckCircle size={15} className="me-2" />
                 <span className="fw-medium">Accepted Data</span>
               </NavLink>
             </li>
 
-            <li className="nav-item mb-2">
+            <li className="nav-item mb-1">
               <NavLink
                 to="/admin/rejected-response"
                 className={({ isActive }) =>
                   `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
                 }
                 style={{ 
-                  padding: '10px 15px', 
+                  padding: '7px 12px', 
                   background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
-                  transition: 'all 0.3s ease'
+                  transition: 'all 0.3s ease',
+                  fontSize: '0.85rem'
                 }}
               >
-                <XCircle size={18} className="me-3" />
+                <XCircle size={15} className="me-2" />
                 <span className="fw-medium">Rejected Data</span>
               </NavLink>
             </li>
 
-            <li className="nav-item mb-2">
+            <li className="nav-item mb-1">
               <NavLink
                 to="/admin/email-sent"
                 className={({ isActive }) =>
                   `nav-link rounded-pill d-flex align-items-center ${isActive ? "active bg-primary" : "text-dark"}`
                 }
                 style={{ 
-                  padding: '10px 15px', 
+                  padding: '7px 12px', 
                   background: isActive => isActive ? '' : 'rgba(255,255,255,0.7)',
-                  transition: 'all 0.3s ease'
+                  transition: 'all 0.3s ease',
+                  fontSize: '0.85rem'
                 }}
               >
-                <Mail size={18} className="me-3" />
+                <Mail size={15} className="me-2" />
                 <span className="fw-medium">Send Email</span>
               </NavLink>
             </li>
@@ -361,7 +373,8 @@ const Sidebar = () => {
           bottom: 0,
           width: '250px',
           background: 'rgba(255,255,255,0.9)',
-          borderTop: '1px solid rgba(0,0,0,0.1)'
+          borderTop: '1px solid rgba(0,0,0,0.1)',
+          fontSize: '0.75rem'
         }}>
           <div className="p-2 text-center" 
                style={{ 
