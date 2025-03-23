@@ -36,25 +36,10 @@ function User_dash() {
     pendingTasks: 0,
     urgentTasks: 0
   });
-
-  // Enhanced data for the chart with gradient
-  const performanceData = [
-    { name: "Mon", tasks: 4, efficiency: 80 },
-    { name: "Tue", tasks: 3, efficiency: 75 },
-    { name: "Wed", tasks: 5, efficiency: 90 },
-    { name: "Thu", tasks: 2, efficiency: 65 },
-    { name: "Fri", tasks: 6, efficiency: 95 },
-    { name: "Sat", tasks: 3, efficiency: 70 },
-    { name: "Sun", tasks: 4, efficiency: 85 }
-  ];
-
-  // Recent activities data
-  const recentActivities = [
-    { id: 1, action: "Completed task", task: "Client outreach", time: "2 hours ago", icon: <BsCheckCircle className="text-success" /> },
-    { id: 2, action: "Updated status", task: "Project proposal", time: "4 hours ago", icon: <BsArrowUp className="text-primary" /> },
-    { id: 3, action: "Added notes", task: "Follow-up meeting", time: "Yesterday", icon: <BsCalendarCheck className="text-info" /> },
-    { id: 4, action: "Started task", task: "Market research", time: "Yesterday", icon: <BsLightbulb className="text-warning" /> }
-  ];
+  const [recentContacts, setRecentContacts] = useState([]);
+  const [contactDistribution, setContactDistribution] = useState([]);
+  const [upcomingFollowUps, setUpcomingFollowUps] = useState([]);
+  const [performanceData, setPerformanceData] = useState([]);
 
   // Task distribution data for pie chart
   const taskDistribution = [
@@ -79,14 +64,131 @@ function User_dash() {
       navigate("/");
     }
 
-    // TODO: Fetch actual stats from your API
-    setStats({
-      totalTasks: 24,
-      completedTasks: 16,
-      pendingTasks: 6,
-      urgentTasks: 2
-    });
+    // Fetch all necessary data
+    fetchDashboardData(userId);
   }, [navigate]);
+
+  const fetchDashboardData = async (userId) => {
+    try {
+      // Fetch current contacts
+      const currentResponse = await fetch(`${import.meta.env.VITE_API_URL}/contacts/employee/${userId}`);
+      const currentResult = await currentResponse.json();
+
+      // Fetch contact updates
+      const updatesResponse = await fetch(`${import.meta.env.VITE_API_URL}/contact-updates`);
+      const updatesResult = await updatesResponse.json();
+
+      if (currentResult.success && updatesResult.success) {
+        const currentContacts = currentResult.data.filter(contact => contact.view === 0);
+        const pastContacts = updatesResult.data.filter(update => update.employeeid._id === userId);
+
+        // Update stats
+        setStats({
+          totalTasks: currentContacts.length + pastContacts.length,
+          completedTasks: pastContacts.filter(contact => 
+            ['Interested', 'Not Interested', 'Wrong Number'].includes(contact.status)
+          ).length,
+          pendingTasks: currentContacts.length,
+          urgentTasks: pastContacts.filter(contact => 
+            contact.status === 'Call Back'
+          ).length
+        });
+
+        // Set recent contacts
+        setRecentContacts(pastContacts
+          .slice(0, 4)
+          .map(contact => ({
+            id: contact._id,
+            action: contact.status,
+            task: contact.contactid.companyName,
+            time: new Date(contact.createdAt).toRelativeTime(),
+            icon: getStatusIcon(contact.status)
+          })));
+
+        // Calculate contact distribution
+        const distribution = calculateDistribution(pastContacts);
+        setContactDistribution(distribution);
+
+        // Set upcoming follow-ups
+        const followUps = pastContacts
+          .filter(contact => contact.status === 'Call Back')
+          .slice(0, 3)
+          .map(contact => ({
+            id: contact._id,
+            task: contact.contactid.companyName,
+            deadline: "Follow up required",
+            priority: "High"
+          }));
+        setUpcomingFollowUps(followUps);
+
+        // Calculate performance data for the last 7 days
+        const last7Days = Array.from({length: 7}, (_, i) => {
+          const date = new Date();
+          date.setDate(date.getDate() - i);
+          return date;
+        }).reverse();
+
+        const weeklyPerformance = last7Days.map(date => {
+          const dayUpdates = updatesResult.data.filter(update => {
+            const updateDate = new Date(update.createdAt);
+            return update.employeeid._id === userId &&
+                   updateDate.getDate() === date.getDate() &&
+                   updateDate.getMonth() === date.getMonth() &&
+                   updateDate.getFullYear() === date.getFullYear();
+          });
+
+          const totalTasks = dayUpdates.length;
+          const completedTasks = dayUpdates.filter(update => 
+            ['Interested', 'Not Interested', 'Wrong Number'].includes(update.status)
+          ).length;
+
+          return {
+            name: date.toLocaleDateString('en-US', { weekday: 'short' }),
+            tasks: totalTasks,
+            efficiency: totalTasks ? Math.round((completedTasks / totalTasks) * 100) : 0
+          };
+        });
+
+        setPerformanceData(weeklyPerformance);
+      }
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+    }
+  };
+
+  const getStatusIcon = (status) => {
+    switch(status) {
+      case 'Interested': return <BsCheckCircle className="text-success" />;
+      case 'Not Interested': return <BsExclamationTriangle className="text-danger" />;
+      case 'Call Back': return <BsClock className="text-warning" />;
+      default: return <BsBell className="text-primary" />;
+    }
+  };
+
+  const calculateDistribution = (contacts) => {
+    const statusCount = contacts.reduce((acc, contact) => {
+      acc[contact.status] = (acc[contact.status] || 0) + 1;
+      return acc;
+    }, {});
+
+    const total = contacts.length;
+    return Object.entries(statusCount).map(([name, value]) => ({
+      name,
+      value: Math.round((value / total) * 100),
+      color: getStatusColor(name)
+    }));
+  };
+
+  const getStatusColor = (status) => {
+    switch(status) {
+      case 'Interested': return '#2ecc71';
+      case 'Not Interested': return '#e74c3c';
+      case 'Call Back': return '#f39c12';
+      case 'Wrong Number': return '#95a5a6';
+      case 'No Response': return '#3498db';
+      default: return '#bdc3c7';
+    }
+  };
 
   // Function to get priority badge color
   const getPriorityColor = (priority) => {
@@ -311,12 +413,26 @@ function User_dash() {
               <Card className="shadow-sm border-0 h-100 hover-lift">
                 <Card.Body className="p-4">
                   <div className="d-flex justify-content-between align-items-center mb-4">
-                    <h5 className="card-title fw-bold mb-0">Recent Activities</h5>
-                    <span className="badge bg-primary rounded-pill">{recentActivities.length} New</span>
+                    <div className="d-flex align-items-center">
+                      <div className="activity-icon me-2">
+                        <BsClock size={20} className="text-primary" />
+                      </div>
+                      <h5 className="card-title fw-bold mb-0">Recent Activities</h5>
+                    </div>
+                    <div className="d-flex align-items-center">
+                      <span className="badge bg-gradient rounded-pill px-3 py-2">
+                        {recentContacts.length} New Updates
+                      </span>
+                    </div>
                   </div>
                   <div className="activities-list">
-                    {recentActivities.map((activity) => (
-                      <div key={activity.id} className="activity-item mb-3 pb-3 border-bottom">
+                    {recentContacts.map((activity) => (
+                      <div 
+                        key={activity.id} 
+                        className="activity-item mb-3 pb-3 border-bottom"
+                        onClick={() => navigate('/user/past')}
+                        style={{ cursor: 'pointer' }}
+                      >
                         <div className="d-flex">
                           <div className="activity-icon me-3 bg-light rounded-circle p-2">
                             {activity.icon}
@@ -330,7 +446,12 @@ function User_dash() {
                       </div>
                     ))}
                     <div className="text-center mt-3">
-                      <button className="btn btn-outline-primary btn-sm rounded-pill">View All Activities</button>
+                      <button 
+                        className="btn btn-outline-primary btn-sm rounded-pill"
+                        onClick={() => navigate('/user/past')}
+                      >
+                        View All Activities
+                      </button>
                     </div>
                   </div>
                 </Card.Body>
@@ -341,26 +462,66 @@ function User_dash() {
               <Card className="shadow-sm border-0 h-100 hover-lift">
                 <Card.Body className="p-4">
                   <div className="d-flex justify-content-between align-items-center mb-4">
-                    <h5 className="card-title fw-bold mb-0">Upcoming Deadlines</h5>
-                    <span className="badge bg-danger rounded-pill">{upcomingDeadlines.length}</span>
+                    <h5 className="card-title fw-bold mb-0">Contact Status Overview</h5>
+                    <button 
+                      className="btn btn-outline-primary btn-sm rounded-pill"
+                      onClick={() => navigate('/user/database')}
+                    >
+                      View Database
+                    </button>
                   </div>
-                  <div className="deadlines-list">
-                    {upcomingDeadlines.map((deadline) => (
-                      <div key={deadline.id} className="deadline-item mb-3 p-3 border-start border-4 rounded-3" 
-                           style={{ borderColor: `var(--bs-${getPriorityColor(deadline.priority)})`, backgroundColor: `rgba(var(--bs-${getPriorityColor(deadline.priority)}-rgb), 0.05)` }}>
-                        <div className="d-flex justify-content-between align-items-start">
-                          <div>
-                            <h6 className="mb-1 fw-semibold">{deadline.task}</h6>
-                            <p className="mb-0 small text-muted">
-                              <BsClock className="me-1" /> {deadline.deadline}
-                            </p>
-                          </div>
-                          <Badge bg={getPriorityColor(deadline.priority)} className="rounded-pill px-3">{deadline.priority}</Badge>
+                  <div className="status-overview">
+                    {contactDistribution.map((status, index) => (
+                      <div key={index} className="status-item mb-3">
+                        <div className="d-flex justify-content-between align-items-center mb-2">
+                          <span className="status-label">
+                            <div className="d-flex align-items-center">
+                              <div 
+                                className="status-dot me-2" 
+                                style={{ 
+                                  width: '10px', 
+                                  height: '10px', 
+                                  borderRadius: '50%', 
+                                  backgroundColor: status.color 
+                                }}
+                              ></div>
+                              {status.name}
+                            </div>
+                          </span>
+                          <span className="status-value fw-bold">{status.value}%</span>
+                        </div>
+                        <div className="progress" style={{ height: '6px' }}>
+                          <div 
+                            className="progress-bar" 
+                            role="progressbar" 
+                            style={{ 
+                              width: `${status.value}%`, 
+                              backgroundColor: status.color 
+                            }} 
+                            aria-valuenow={status.value} 
+                            aria-valuemin="0" 
+                            aria-valuemax="100"
+                          ></div>
                         </div>
                       </div>
                     ))}
-                    <div className="text-center mt-3">
-                      <button className="btn btn-outline-primary btn-sm rounded-pill">View Calendar</button>
+                  </div>
+                  <div className="mt-4">
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                      <h6 className="mb-0">Total Contacts Handled</h6>
+                      <span className="fw-bold">{stats.totalTasks}</span>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                      <h6 className="mb-0">Response Rate</h6>
+                      <span className="fw-bold">
+                        {stats.totalTasks ? 
+                          `${Math.round((stats.completedTasks / stats.totalTasks) * 100)}%` : 
+                          '0%'}
+                      </span>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <h6 className="mb-0">Pending Follow-ups</h6>
+                      <span className="fw-bold text-warning">{stats.urgentTasks}</span>
                     </div>
                   </div>
                 </Card.Body>
@@ -372,5 +533,19 @@ function User_dash() {
     </div>
   );
 }
+
+// Add this helper function
+Date.prototype.toRelativeTime = function() {
+  const now = new Date();
+  const diff = now - this;
+  const minutes = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+
+  if (minutes < 60) return `${minutes} minutes ago`;
+  if (hours < 24) return `${hours} hours ago`;
+  if (days === 1) return 'Yesterday';
+  return `${days} days ago`;
+};
 
 export default User_dash;
