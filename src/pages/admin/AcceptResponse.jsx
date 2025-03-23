@@ -224,7 +224,7 @@ const AcceptResponse = () => {
                 <p>Try adjusting your search or filter criteria</p>
               </div>
             ) : (
-              <div className="progress-list">
+              <div className="progress-list grid-layout">
                 {filteredAndSortedData.map((item) => (
                   <div key={item.id} className="progress-item">
                     <div className="item-header">

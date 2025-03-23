@@ -231,9 +231,20 @@ const RejectedResponse = () => {
                 <p>Try adjusting your search or filter criteria</p>
               </div>
             ) : (
-              <div className="progress-list">
+              <div className="progress-list" style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
+                gap: '20px',
+                padding: '20px'
+              }}>
                 {filteredAndSortedData.map((item) => (
-                  <div key={item.id} className="progress-item rejected-item" style={{border: '2px solid #ff0000', backgroundColor: '#fff5f5'}}>
+                  <div key={item.id} className="progress-item rejected-item" style={{
+                    border: '2px solid #ff0000',
+                    backgroundColor: '#fff5f5',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}>
                     <div className="item-header">
                       <div className="user-info">
                         <div className="user-avatar">{item.name[0]}</div>
