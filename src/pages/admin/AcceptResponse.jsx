@@ -125,14 +125,17 @@ const AcceptResponse = () => {
           ` : ''}
         </div>
       `,
-      customClass: {
-        container: 'details-modal',
-        popup: 'details-popup',
-        content: 'details-content'
-      },
+      position: 'center',
       width: '600px',
       showCloseButton: true,
-      showConfirmButton: false
+      showConfirmButton: false,
+      customClass: {
+        popup: 'swal2-popup-custom',
+      },
+      backdrop: true,
+      allowOutsideClick: true,
+      heightAuto: false,
+      grow: false
     });
   };
 

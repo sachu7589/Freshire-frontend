@@ -115,3 +115,20 @@
     margin-bottom: 16px;
     color: #999;
   }
+  
+  /* Add these styles to ensure proper modal positioning */
+  .swal2-popup-custom {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+  }
+  
+  .swal2-container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 9999 !important;
+  }
