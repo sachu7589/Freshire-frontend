@@ -156,6 +156,7 @@ function User_databse() {
               fontSize: '2rem',
               fontWeight: '600',
               color: '#1f2937',
+              marginTop: '2.5rem',
               marginBottom: '1.5rem',
               textAlign: 'left',
               borderBottom: '2px solid #e5e7eb',
