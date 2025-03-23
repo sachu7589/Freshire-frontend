@@ -16,6 +16,61 @@ const ViewEmployees = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState('all');
 
+  // Custom styles to make cards smaller
+  const customStyles = {
+    progressList: {
+      gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+      gap: '16px',
+    },
+    progressItem: {
+      borderRadius: '12px',
+    },
+    itemHeader: {
+      padding: '16px',
+    },
+    userAvatar: {
+      width: '40px',
+      height: '40px',
+      borderRadius: '12px',
+      fontSize: '18px',
+    },
+    userDetails: {
+      gap: '2px',
+    },
+    userDetailsH3: {
+      fontSize: '16px',
+      margin: '0',
+    },
+    userDetailsSpan: {
+      fontSize: '12px',
+    },
+    itemBody: {
+      padding: '12px 16px',
+    },
+    infoGrid: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '8px',
+    },
+    infoItem: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      fontSize: '13px',
+    },
+    itemFooter: {
+      padding: '12px 16px',
+    },
+    actionButtons: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+    },
+    actionButton: {
+      padding: '6px 12px',
+      fontSize: '12px',
+    }
+  };
+
   useEffect(() => {
     // Check if user is logged in
     const userId = sessionStorage.getItem("userId");
@@ -191,15 +246,15 @@ const ViewEmployees = () => {
                 <p>Try adjusting your search criteria</p>
               </div>
             ) : (
-              <div className="progress-list">
+              <div className="progress-list" style={customStyles.progressList}>
                 {filteredEmployees.map((employee) => (
-                  <div key={employee._id} className="progress-item">
-                    <div className="item-header">
+                  <div key={employee._id} className="progress-item" style={customStyles.progressItem}>
+                    <div className="item-header" style={customStyles.itemHeader}>
                       <div className="user-info">
-                        <div className="user-avatar">{employee.name[0]}</div>
-                        <div className="user-details">
-                          <h3>{employee.name}</h3>
-                          <span>Employee</span>
+                        <div className="user-avatar" style={customStyles.userAvatar}>{employee.name[0]}</div>
+                        <div className="user-details" style={customStyles.userDetails}>
+                          <h3 style={customStyles.userDetailsH3}>{employee.name}</h3>
+                          <span style={customStyles.userDetailsSpan}>Employee</span>
                         </div>
                       </div>
                       <div className="status-tag">
@@ -209,33 +264,34 @@ const ViewEmployees = () => {
                       </div>
                     </div>
 
-                    <div className="item-body">
-                      <div className="info-grid">
-                        <div className="info-item">
-                          <Mail size={16} />
+                    <div className="item-body" style={customStyles.itemBody}>
+                      <div className="info-grid" style={customStyles.infoGrid}>
+                        <div className="info-item" style={customStyles.infoItem}>
+                          <Mail size={14} />
                           <span>{employee.email}</span>
                         </div>
-                        <div className="info-item">
-                          <Phone size={16} />
+                        <div className="info-item" style={customStyles.infoItem}>
+                          <Phone size={14} />
                           <span>{employee.phoneNumber}</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="item-footer">
-                      <div className="action-buttons">
+                    <div className="item-footer" style={customStyles.itemFooter}>
+                      <div className="action-buttons" style={customStyles.actionButtons}>
                         <button 
                           className={`btn-${employee.status === 'active' ? 'danger' : 'success'}`}
+                          style={customStyles.actionButton}
                           onClick={() => handleStatusToggle(employee._id, employee.status)}
                         >
                           {employee.status === 'active' ? (
                             <>
-                              <UserX size={16} />
+                              <UserX size={14} />
                               Deactivate
                             </>
                           ) : (
                             <>
-                              <UserCheck size={16} />
+                              <UserCheck size={14} />
                               Activate
                             </>
                           )}
