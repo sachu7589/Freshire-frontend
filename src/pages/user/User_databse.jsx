@@ -144,273 +144,136 @@ function User_databse() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="dashboard-container contacts-dashboard">
-        <Sidebar />
-        <div className="dashboard-content contacts-content">
-          <main className="main-content">
-            <div>Loading contacts...</div>
-          </main>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="dashboard-container contacts-dashboard">
-        <Sidebar />
-        <div className="dashboard-content contacts-content">
-          <main className="main-content">
-            <div className="error-container">
-              <div className="error-message">
-                <h2>No Data Found</h2>
-                <p>{error}</p>
-              </div>
-            </div>
-          </main>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="dashboard-container contacts-dashboard">
+    <div className="app">
       <Sidebar />
-      <div className="dashboard-content contacts-content">
-        <main className="main-content" style={{ paddingTop: "60px" }}>
-          
-          <div className="contacts-header">
-            <h1 className="contacts-title" style={{ marginTop: "10px" }}>Contact Management</h1>
-            <div className="contacts-stats">
+      <div className="main-content">
+        <div className="sticky-header">
+        </div>
+        <div className="assign-works-wrapper">
+          <div className="header-section">
+            <h1 className="page-title" style={{
+              fontSize: '2rem',
+              fontWeight: '600',
+              color: '#1f2937',
+              marginBottom: '1.5rem',
+              textAlign: 'left',
+              borderBottom: '2px solid #e5e7eb',
+              paddingBottom: '0.75rem'
+            }}>Contact Management</h1>
+            <div className="stats-container">
               <div className="stat-card">
                 <div className="stat-value">{contacts.length}</div>
                 <div className="stat-label">Pending Contacts</div>
               </div>
-              {/* <div className="stat-card">
-                <div className="stat-value">{contacts.filter(c => contactStatuses[c._id]).length}</div>
-                <div className="stat-label">In Progress</div>
-              </div> */}
             </div>
           </div>
-          
-          <div className="contacts-table-container">
-            <div className="contacts-table-header">
-              <h2 className="contacts-table-title">
-                <i className="fas fa-address-book"></i> Contact Database
-              </h2>
-            </div>
-            
-            <div className="contacts-table-responsive">
-              <table className="contacts-table">
-                <thead>
-                  <tr>
-                    <th>Company</th>
-                    <th>Contact Information</th>
-                    <th>Status</th>
-                    <th>Notes</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {contacts.length === 0 ? (
-                    <tr>
-                      <td colSpan="5" className="no-data-cell">
-                        <div className="no-data-message">
-                          <i className="fas fa-inbox empty-icon"></i>
-                          <p>No contacts available for processing</p>
-                          <p className="action-hint">All contacts have been processed or none have been assigned</p>
-                        </div>
-                      </td>
-                    </tr>
-                  ) : (
-                    contacts.map((contact, index) => (
-                      <tr 
-                        key={contact._id || index} 
-                        className="contact-row"
-                        style={{ 
-                          backgroundColor: index % 2 === 0 ? '#f8f9fa' : '#ffffff',
-                          borderLeft: '3px solid #233ce6',
-                          boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-                          marginBottom: '8px',
-                          transition: 'all 0.2s ease'
-                        }}
-                      >
-                        <td data-label="Company">
-                          <div className="company-cell">
-                            <div className="company-avatar" style={{ 
-                              backgroundColor: '#233ce6', 
-                              color: 'white',
-                              fontWeight: 'bold',
-                              width: '40px',
-                              height: '40px',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              borderRadius: '50%',
-                              fontSize: '16px'
-                            }}>
-                              {contact.companyName.charAt(0)}
-                            </div>
-                            <span style={{ fontWeight: '500' }}>{contact.companyName}</span>
-                          </div>
-                        </td>
-                        <td data-label="Contact Information">
-                          <div className="contact-details" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                            <div className="contact-email" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                              <i className="fas fa-envelope" style={{ color: '#6c757d' }}></i>
-                              <span>{contact.email}</span>
-                              <a href={`mailto:${contact.email}`} className="social-link" title="Send email" style={{ 
-                                backgroundColor: '#e9ecef', 
-                                color: '#495057',
-                                width: '28px',
-                                height: '28px',
-                                borderRadius: '50%',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                marginLeft: '4px'
-                              }}>
-                                <i className="fas fa-paper-plane" style={{ fontSize: '12px' }}></i>
-                              </a>
-                            </div>
-                            <div className="contact-phone" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                              <i className="fas fa-phone" style={{ color: '#6c757d' }}></i>
-                              <span>{contact.phone}</span>
-                              <a href={`tel:${contact.phone}`} className="social-link" title="Call" style={{ 
-                                backgroundColor: '#e9ecef', 
-                                color: '#495057',
-                                width: '28px',
-                                height: '28px',
-                                borderRadius: '50%',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                marginLeft: '4px'
-                              }}>
-                                <i className="fas fa-phone-alt" style={{ fontSize: '12px' }}></i>
-                              </a>
-                            </div>
-                            {contact.socialMedia && (
-                              <div className="contact-website" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <i className="fas fa-globe" style={{ color: '#6c757d' }}></i>
-                                <span>Website</span>
-                                <a href={contact.socialMedia} target="_blank" rel="noopener noreferrer" className="social-link" title="Visit website" style={{ 
-                                  backgroundColor: '#e9ecef', 
-                                  color: '#495057',
-                                  width: '28px',
-                                  height: '28px',
-                                  borderRadius: '50%',
-                                  display: 'inline-flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  marginLeft: '4px'
-                                }}>
-                                  <i className="fas fa-external-link-alt" style={{ fontSize: '12px' }}></i>
-                                </a>
-                              </div>
-                            )}
-                          </div>
-                        </td>
-                        <td data-label="Status">
-                          <select 
-                            className="status-dropdown"
-                            value={contactStatuses[contact._id] || ""}
-                            onChange={(e) => setContactStatuses({
-                              ...contactStatuses,
-                              [contact._id]: e.target.value
-                            })}
-                            style={{
-                              border: '1px solid #ced4da',
-                              borderRadius: '4px',
-                              padding: '8px 12px',
-                              width: '100%'
-                            }}
-                          >
-                            <option value="">Select Status</option>
-                            <option value="called">Called</option>
-                            <option value="not_responding">Not Responding</option>
-                            <option value="interested">Interested</option>
-                            <option value="follow_up">Follow Up</option>
-                            <option value="meeting_scheduled">Meeting Scheduled</option>
-                            <option value="converted">Converted</option>
-                            <option value="not_interested">Not Interested</option>
-                          </select>
-                        </td>
-                        <td data-label="Notes">
-                          <textarea
-                            className="notes-textarea"
-                            value={contactNotes[contact._id] || ""}
-                            onChange={(e) => setContactNotes({
-                              ...contactNotes,
-                              [contact._id]: e.target.value
-                            })}
-                            placeholder="Add your contact notes here..."
-                            style={{
-                              border: '1px solid #ced4da',
-                              borderRadius: '4px',
-                              padding: '8px 12px',
-                              resize: 'vertical',
-                              width: '100%',
-                              minHeight: '80px'
-                            }}
-                          />
-                        </td>
-                        <td data-label="Action">
-                          <button 
-                            className="submit-button"
-                            onClick={() => handleSubmit(contact._id)}
-                            disabled={!contactStatuses[contact._id] || !contactNotes[contact._id]}
-                            style={{
-                              backgroundColor: '#233ce6',
-                              color: '#ffffff',
-                              padding: '8px 16px',
-                              borderRadius: '4px',
-                              border: 'none',
-                              cursor: (!contactStatuses[contact._id] || !contactNotes[contact._id]) ? 'not-allowed' : 'pointer',
-                              opacity: (!contactStatuses[contact._id] || !contactNotes[contact._id]) ? '0.6' : '1',
-                              transition: 'all 0.3s ease',
-                              width: '100%',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              gap: '8px'
-                            }}
-                          >
-                            <i className="fas fa-check-circle"></i> Submit
-                          </button>
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          
-          {/* Loading state */}
-          {loading && (
+
+          {loading ? (
             <div className="loading-container">
-              <div className="loading-spinner"></div>
-            </div>
-          )}
-          
-          {/* Error state */}
-          {error && (
-            <div className="error-container">
-              <div className="error-message">
-                <i className="fas fa-exclamation-circle error-icon"></i>
-                <h2>Unable to Load Contacts</h2>
-                <p>{error}</p>
-                <button className="retry-button" onClick={() => window.location.reload()}>
-                  <i className="fas fa-redo"></i> Try Again
-                </button>
+              <div className="loading-animation">
+                <div className="dot"></div>
+                <div className="dot"></div>
+                <div className="dot"></div>
               </div>
+              <h2 className="loading-text">Loading Contacts</h2>
+              <p className="loading-subtext">Please wait while we fetch the data</p>
+            </div>
+          ) : error ? (
+            <div className="error-container">
+              <span className="error-icon">⚠️</span>
+              <p className="error-message">{error}</p>
+            </div>
+          ) : (
+            <div className="contacts-grid">
+              {contacts.length === 0 ? (
+                <div className="no-results">
+                  <i className="fas fa-inbox"></i>
+                  <p>No contacts available for processing</p>
+                  <p className="subtext">All contacts have been processed or none have been assigned</p>
+                </div>
+              ) : (
+                contacts.map((contact) => (
+                  <div key={contact._id} className="contact-card">
+                    <div className="contact-header">
+                      <div className="avatar">
+                        {contact.companyName.charAt(0).toUpperCase()}
+                      </div>
+                      <div className="contact-details">
+                        <h3 className="company-name">{contact.companyName}</h3>
+                      </div>
+                    </div>
+
+                    <div className="contact-info">
+                      <div className="info-item">
+                        <i className="fas fa-envelope"></i>
+                        <span>{contact.email}</span>
+                        <a href={`mailto:${contact.email}`} className="action-link">
+                          <i className="fas fa-paper-plane"></i>
+                        </a>
+                      </div>
+                      <div className="info-item">
+                        <i className="fas fa-phone"></i>
+                        <span>{contact.phone}</span>
+                        <a href={`tel:${contact.phone}`} className="action-link">
+                          <i className="fas fa-phone-alt"></i>
+                        </a>
+                      </div>
+                      {contact.socialMedia && (
+                        <div className="info-item">
+                          <i className="fas fa-globe"></i>
+                          <span>Website</span>
+                          <a href={contact.socialMedia} target="_blank" rel="noopener noreferrer" className="action-link">
+                            <i className="fas fa-external-link-alt"></i>
+                          </a>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="status-section">
+                      <select 
+                        className="status-dropdown"
+                        value={contactStatuses[contact._id] || ""}
+                        onChange={(e) => setContactStatuses({
+                          ...contactStatuses,
+                          [contact._id]: e.target.value
+                        })}
+                      >
+                        <option value="">Select Status</option>
+                        <option value="called">Called</option>
+                        <option value="not_responding">Not Responding</option>
+                        <option value="interested">Interested</option>
+                        <option value="follow_up">Follow Up</option>
+                        <option value="meeting_scheduled">Meeting Scheduled</option>
+                        <option value="converted">Converted</option>
+                        <option value="not_interested">Not Interested</option>
+                      </select>
+
+                      <textarea
+                        className="notes-textarea"
+                        value={contactNotes[contact._id] || ""}
+                        onChange={(e) => setContactNotes({
+                          ...contactNotes,
+                          [contact._id]: e.target.value
+                        })}
+                        placeholder="Add your contact notes here..."
+                      />
+
+                      <button
+                        onClick={() => handleSubmit(contact._id)}
+                        className={`submit-button ${(!contactStatuses[contact._id] || !contactNotes[contact._id]) ? 'disabled' : ''}`}
+                        disabled={!contactStatuses[contact._id] || !contactNotes[contact._id]}
+                      >
+                        <i className="fas fa-check-circle"></i>
+                        <span>Submit</span>
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           )}
-          
-        </main>
+        </div>
       </div>
     </div>
   );
