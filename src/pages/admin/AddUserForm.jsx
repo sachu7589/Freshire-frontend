@@ -79,31 +79,36 @@ const AddUserForm = () => {
   return (
     <div className="app">
       <Sidebar />
-      <div className="main-content">
-        <div className="content-grid">
+      <div className="main-content" style={{ padding: '1rem' }}>
+        <div className="content-grid" style={{ gap: '1rem', maxWidth: '1200px', margin: '0 auto' }}>
           {/* Left Side - Form */}
-          <div className="form-section">
-            <div className="form-container">
-              <div className="form-header">
-                <h2 className="form-title">Add New User</h2>
-                <p className="form-subtitle">Enter user details to create a new account</p>
+          <div className="form-section" style={{ flex: '0 1 600px' }}>
+            <div className="form-container" style={{ padding: '1.5rem', maxWidth: '100%' }}>
+              <div className="form-header" style={{ marginBottom: '1rem' }}>
+                <h2 className="form-title" style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Add New User</h2>
+                <p className="form-subtitle" style={{ fontSize: '0.875rem', color: 'white' }}>Enter user details to create a new account</p>
               </div>
               
               {!canAddUser() && (
-                <div className="permission-notice">
+                <div className="permission-notice" style={{ 
+                  padding: '0.75rem', 
+                  fontSize: '0.875rem', 
+                  marginBottom: '1rem' 
+                }}>
                   Only Sales Officers can add new users. Other officers can add users only in the absence of a Sales Officer.
                 </div>
               )}
               
               <form className="add-user-form" onSubmit={handleSubmit}>
-                {error && <div className="error-message">{error}</div>}
+                {error && <div className="error-message" style={{ marginBottom: '1rem' }}>{error}</div>}
                 
-                <div className="form-sections">
-                  <div className="form-section">
-                    <h3 className="section-title">Personal Information</h3>
-                    <div className="form-group">
-                      <label htmlFor="name">Full Name</label>
+                <div className="form-sections" style={{ gap: '1rem' }}>
+                  <div className="form-section" style={{ padding: '0' }}>
+                    <h3 className="section-title" style={{ fontSize: '1rem', marginBottom: '1rem' }}>Personal Information</h3>
+                    <div className="form-group" style={{ marginBottom: '1rem' }}>
+                      <label htmlFor="name" style={{ fontSize: '0.875rem', marginBottom: '0.25rem' }}>Full Name</label>
                       <input
+                        style={{ padding: '0.5rem', fontSize: '0.875rem' }}
                         id="name"
                         type="text"
                         name="name"
@@ -115,10 +120,11 @@ const AddUserForm = () => {
                       />
                     </div>
 
-                    <div className="form-group">
-                      <label htmlFor="email">Email Address</label>
+                    <div className="form-group" style={{ marginBottom: '1rem' }}>
+                      <label htmlFor="email" style={{ fontSize: '0.875rem', marginBottom: '0.25rem' }}>Email Address</label>
                       <div className="input-wrapper">
                         <input
+                          style={{ padding: '0.5rem', fontSize: '0.875rem' }}
                           id="email"
                           type="email"
                           name="email"
@@ -132,10 +138,11 @@ const AddUserForm = () => {
                       </div>
                     </div>
 
-                    <div className="form-group">
-                      <label htmlFor="phoneNumber">Phone Number</label>
+                    <div className="form-group" style={{ marginBottom: '1rem' }}>
+                      <label htmlFor="phoneNumber" style={{ fontSize: '0.875rem', marginBottom: '0.25rem' }}>Phone Number</label>
                       <div className="input-wrapper">
                         <input
+                          style={{ padding: '0.5rem', fontSize: '0.875rem' }}
                           id="phoneNumber"
                           type="tel"
                           name="phoneNumber"
@@ -151,11 +158,12 @@ const AddUserForm = () => {
                   </div>
                 </div>
 
-                <div className="form-actions">
+                <div className="form-actions" style={{ marginTop: '1.5rem' }}>
                   <button 
                     type="submit" 
                     disabled={loading}
                     className="submit-button"
+                    style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}
                   >
                     {loading ? (
                       <span className="loading-state">
@@ -172,28 +180,28 @@ const AddUserForm = () => {
           </div>
 
           {/* Right Side - Terms */}
-          <div className="terms-section">
-            <div className="terms-container">
-              <h3 className="terms-title">User Addition Guidelines</h3>
+          <div className="terms-section" style={{ flex: '0 1 400px' }}>
+            <div className="terms-container" style={{ padding: '1.5rem' }}>
+              <h3 className="terms-title" style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>User Addition Guidelines</h3>
               
-              <div className="terms-content">
-                <h4>Permission Hierarchy</h4>
-                <ul className="terms-list">
-                  <li>Sales Officers have primary authority to add new (COLD CALLING) users</li>
-                  <li>In absence of Sales Officers, other officers can add users</li>
+              <div className="terms-content" style={{ fontSize: '0.875rem' }}>
+                <h4 style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>Permission Hierarchy</h4>
+                <ul className="terms-list" style={{ marginBottom: '1rem', paddingLeft: '1.25rem' }}>
+                  <li style={{ marginBottom: '0.25rem' }}>Sales Officers have primary authority to add new (COLD CALLING) users</li>
+                  <li style={{ marginBottom: '0.25rem' }}>In absence of Sales Officers, other officers can add users</li>
                 </ul>
 
-                <h4>Required Information</h4>
-                <ul className="terms-list">
-                  <li>Full Name (as per official documents)</li>
-                  <li>Valid Email Address (for login credentials)</li>
-                  <li>Active Phone Number (for verification)</li>
+                <h4 style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>Required Information</h4>
+                <ul className="terms-list" style={{ marginBottom: '1rem', paddingLeft: '1.25rem' }}>
+                  <li style={{ marginBottom: '0.25rem' }}>Full Name (as per official documents)</li>
+                  <li style={{ marginBottom: '0.25rem' }}>Valid Email Address (for login credentials)</li>
+                  <li style={{ marginBottom: '0.25rem' }}>Active Phone Number (for verification)</li>
                 </ul>
 
-                <h4>Important Notes</h4>
-                <ul className="terms-list">
-                  <li>Verify all information before submission</li>
-                  <li>Login credentials will be sent to the provided email</li>
+                <h4 style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>Important Notes</h4>
+                <ul className="terms-list" style={{ paddingLeft: '1.25rem' }}>
+                  <li style={{ marginBottom: '0.25rem' }}>Verify all information before submission</li>
+                  <li style={{ marginBottom: '0.25rem' }}>Login credentials will be sent to the provided email</li>
                 </ul>
               </div>
             </div>
