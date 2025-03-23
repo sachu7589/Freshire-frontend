@@ -89,47 +89,53 @@ const RejectedResponse = () => {
     Swal.fire({
       title: 'Response Details',
       html: `
-        <div class="details-container">
+        <div class="details-container" style="text-align: left;">
           <div class="detail-group">
-            <h3 style="font-size: 18px; color: #2c3e50; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 8px;">
+            <h3 style="font-size: 16px; color: #374151; margin-bottom: 12px; font-weight: 600;">
               Contact Information
             </h3>
-            <p style="margin: 12px 0; font-size: 15px;"><strong style="color: #34495e;">Name:</strong> <span style="color: #2c3e50;">${item.name}</span></p>
-            <p style="margin: 12px 0; font-size: 15px;"><strong style="color: #34495e;">Company:</strong> <span style="color: #2c3e50;">${item.companyName}</span></p>
-            <p style="margin: 12px 0; font-size: 15px;"><strong style="color: #34495e;">Phone:</strong> <span style="color: #2c3e50;">${item.phone}</span></p>
+            <div style="background: #f3f4f6; padding: 16px; border-radius: 8px;">
+              <p style="margin: 8px 0; font-size: 14px;"><strong>Name:</strong> ${item.name}</p>
+              <p style="margin: 8px 0; font-size: 14px;"><strong>Company:</strong> ${item.companyName}</p>
+              <p style="margin: 8px 0; font-size: 14px;"><strong>Phone:</strong> ${item.phone}</p>
+            </div>
           </div>
-          <div class="detail-group" style="margin-top: 25px;">
-            <h3 style="font-size: 18px; color: #2c3e50; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 8px;">
+          
+          <div class="detail-group" style="margin-top: 20px;">
+            <h3 style="font-size: 16px; color: #374151; margin-bottom: 12px; font-weight: 600;">
               Response Status
             </h3>
-            <p style="margin: 12px 0; font-size: 15px;">
-              <strong style="color: #34495e;">Status:</strong> 
-              <span class="status status-rejected" style="margin-left: 8px; padding: 6px 12px; border-radius: 6px; font-weight: 500; background-color: #dc2626; color: white;">
-                ${item.status}
-              </span>
-            </p>
-            <p style="margin: 12px 0; font-size: 15px;"><strong style="color: #34495e;">Date:</strong> <span style="color: #2c3e50;">${item.date}</span></p>
+            <div style="background: #f3f4f6; padding: 16px; border-radius: 8px;">
+              <p style="margin: 8px 0; font-size: 14px;">
+                <strong>Status:</strong> 
+                <span style="background-color: #dc2626; color: white; padding: 4px 8px; border-radius: 4px; margin-left: 4px; font-size: 12px;">
+                  ${item.status}
+                </span>
+              </p>
+              <p style="margin: 8px 0; font-size: 14px;"><strong>Date:</strong> ${item.date}</p>
+            </div>
           </div>
+          
           ${item.notes ? `
-            <div class="detail-group" style="margin-top: 25px;">
-              <h3 style="font-size: 18px; color: #2c3e50; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 8px;">
+            <div class="detail-group" style="margin-top: 20px;">
+              <h3 style="font-size: 16px; color: #374151; margin-bottom: 12px; font-weight: 600;">
                 Additional Notes
               </h3>
-              <div class="notes-section" style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #3498db;">
-                <p style="margin: 0; color: #2c3e50; line-height: 1.6; font-size: 15px;">${item.notes}</p>
+              <div style="background: #f3f4f6; padding: 16px; border-radius: 8px;">
+                <p style="margin: 0; color: #374151; line-height: 1.5; font-size: 14px;">${item.notes}</p>
               </div>
             </div>
           ` : ''}
         </div>
       `,
-      customClass: {
-        container: 'details-modal',
-        popup: 'details-popup',
-        content: 'details-content'
-      },
-      width: '600px',
+      width: '500px',
+      padding: '20px',
       showCloseButton: true,
-      showConfirmButton: false
+      showConfirmButton: false,
+      customClass: {
+        popup: 'swal2-popup-custom',
+        closeButton: 'swal2-close-custom'
+      }
     });
   };
 
