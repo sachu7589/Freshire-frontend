@@ -175,59 +175,8 @@ Keep up the good work!`;
               ))}
             </div>
           </div>
-
-          {/* Search and Filter Bar */}
-          <div className="search-filter-bar">
-            <div className="search-box">
-              <Search size={20} />
-              <input
-                type="text"
-                placeholder="Search by name or performance..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              {searchQuery && (
-                <button 
-                  className="clear-search"
-                  onClick={() => setSearchQuery('')}
-                >
-                  ×
-                </button>
-              )}
-            </div>
-
-            <div className="filter-sort-group">
-              <div className="filter-dropdown">
-                <Filter size={20} />
-                <select
-                  value={filterStatus}
-                  onChange={(e) => setFilterStatus(e.target.value)}
-                >
-                  <option value="all">All Performance</option>
-                  <option value="high">High Performers</option>
-                  <option value="medium">Medium Performers</option>
-                  <option value="low">Low Performers</option>
-                </select>
-              </div>
-
-              <div className="sort-dropdown">
-                <select
-                  value={sortOrder}
-                  onChange={(e) => setSortOrder(e.target.value)}
-                >
-                  <option value="desc">Highest First</option>
-                  <option value="asc">Lowest First</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          {/* Results Summary */}
-          <div className="results-summary">
-            Showing {filteredAndSortedData.length} of {employeeData.length} employees
-          </div>
-
-          {/* Top Performers Section */}
+          
+              {/* high performance data */}
           <div className="progress-list">
             <div className="progress-item top-performer">
               <div className="item-header">
@@ -280,6 +229,62 @@ Keep up the good work!`;
               </div>
             </div>
           </div>
+
+          {/* Search and Filter Bar */}
+          <div className="search-filter-bar">
+            <div className="search-box">
+              <Search size={20} />
+              <input
+                type="text"
+                placeholder="Search by name or performance..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              {searchQuery && (
+                <button 
+                  className="clear-search"
+                  onClick={() => setSearchQuery('')}
+                >
+                  ×
+                </button>
+              )}
+            </div>
+
+            <div className="filter-sort-group">
+              <div className="filter-dropdown">
+                <Filter size={20} />
+                <select
+                  value={filterStatus}
+                  onChange={(e) => setFilterStatus(e.target.value)}
+                >
+                  <option value="all">All Performance</option>
+                  <option value="high">High Performers</option>
+                  <option value="medium">Medium Performers</option>
+                  <option value="low">Low Performers</option>
+                </select>
+              </div>
+
+              <div className="sort-dropdown">
+                <select
+                  value={sortOrder}
+                  onChange={(e) => setSortOrder(e.target.value)}
+                >
+                  <option value="desc">Highest First</option>
+                  <option value="asc">Lowest First</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          
+
+          {/* Results Summary */}
+          <div className="results-summary">
+            Showing {filteredAndSortedData.length} of {employeeData.length} employees
+          </div>
+
+          {/* Top Performers Section */}
+          
 
           {/* Updated Employee List Section */}
           <div className="table-container">
